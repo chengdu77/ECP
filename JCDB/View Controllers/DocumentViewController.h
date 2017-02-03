@@ -9,7 +9,4 @@
 #import "HeadViewController.h"
 
 @interface DocumentViewController : HeadViewController
-
-
-
 @end

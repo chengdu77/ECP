@@ -8,7 +8,6 @@
 
 #import "EndMatterListViewController.h"
 #import "WorkOrderDetailsViewController.h"
-#import "LeaveSlideView.h"
 #import "WorkOrderCell.h"
 #import "WorkOrderBean.h"
 
@@ -37,12 +36,18 @@
     self.markLabel.hidden=YES;
     [self.scrollView addSubview:self.markLabel];
     
-    [self queryWithState:self.state withPage:0];
+ 
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self queryWithState:self.state withPage:0];
 }
 
 -(void) initSlideView{
@@ -64,13 +69,13 @@
     defaultTag=0;
     // @"办结事宜",@"完结事宜"
     if ([state isEqualToString:@"getwfprocessWJlist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessWJAction?action=%@&pageIndex=1",self.serviceIPInfo,state];
+        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessWJAction?action=%@&pageIndex=%@",self.serviceIPInfo,state,@(pageNum)];
         image = [UIImage imageNamed:@"img_daiban"];
     }
     
     
     if ([state isEqualToString:@"getwfprocesslist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessywcAction?action=%@&pageIndex=1",self.serviceIPInfo,state];
+        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessywcAction?action=%@&pageIndex=%@",self.serviceIPInfo,state,@(pageNum)];
         defaultTag = 1;
         image = [UIImage imageNamed:@"img_daiban"];
     }
@@ -81,7 +86,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;
@@ -121,7 +126,7 @@
                 [tempArray addObject:bean];
             }
             
-            if (pageNum ==0) {
+            if (pageNum ==1) {
                 [self performSelector:@selector(initSlideView) withObject:nil afterDelay:0.4f];
             }
 
@@ -135,7 +140,7 @@
         [MBProgressHUD showError:@"请求失败" toView:self.view.window];
         self.markLabel.hidden=YES;
         
-        if (pageNum ==0) {
+        if (pageNum ==1) {
             [self performSelector:@selector(initSlideView) withObject:nil afterDelay:0.4f];
         }
     }];
@@ -168,11 +173,11 @@
     
     WorkOrderBean *bean = object;
     WorkOrderDetailsViewController *details=[WorkOrderDetailsViewController new];
-    details.canEditFlag = ([self.state isEqualToString:@"getwfprocessWJlist"] && page ==0)?YES:NO;
+    details.canEditFlag = NO;
     details.processid = bean.processid;
     details.currentnode = bean.currentnode;
     [details setSuccessRefreshViewBlock:^{
-        [self reloadDataWithPageTag:0 withPageNumber:0];
+        [self reloadDataWithPageTag:0 withPageNumber:1];
     }];
     [self.navigationController pushViewController:details animated:YES];
 }
@@ -194,11 +199,11 @@
     NSString *serviceStr = nil;
     // @"办结事宜",@"完结事宜"
     if ([state isEqualToString:@"getwfprocessWJlist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessWJAction?action=%@&pageIndex=1",self.serviceIPInfo,state];
+        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessWJAction?action=%@&pageIndex=%@",self.serviceIPInfo,state,@(pageNum)];
     }
     
     if ([state isEqualToString:@"getwfprocesslist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessywcAction?action=%@&pageIndex=1",self.serviceIPInfo,state];
+        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessywcAction?action=%@&pageIndex=%@",self.serviceIPInfo,state,@(pageNum)];
     }
 
     
@@ -208,7 +213,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

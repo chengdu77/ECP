@@ -101,7 +101,7 @@
     [self setCookie:url];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
@@ -164,7 +164,8 @@
     view.value = bean.moduleid;
     
     UILabel *groupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,self.viewWidth, 30)];
-    groupLabel.text = [NSString stringWithFormat:@"   %@",bean.moduleObjname];
+    groupLabel.text = bean.moduleObjname;
+    groupLabel.textAlignment = NSTextAlignmentCenter;
     groupLabel.font = [UIFont fontWithName:kFontName size:16.0];
     groupLabel.backgroundColor = kBackgroundColor;
     [view addSubview:groupLabel];
@@ -270,7 +271,7 @@
     [self setCookie:url];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];

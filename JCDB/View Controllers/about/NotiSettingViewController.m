@@ -27,7 +27,7 @@ static NotiSettingViewController* _nsvc;
 @implementation NotiSettingViewController
 
 - (void)viewDidLoad{
-//    [super viewDidLoad];
+   // [super viewDidLoad];
     
     self.txView.backgroundColor = kALLBUTTON_COLOR;
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
@@ -77,25 +77,22 @@ static NotiSettingViewController* _nsvc;
 }
 
 - (void)abortAppAction:(id)sender{
-    
-    if(IOS8_OR_LATER)
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注销" message:@"是否退出本次登陆的账号?"
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *actionCancel =  [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)
-                                        {
-                                            
-                                        }];
-        UIAlertAction *actionOK     =  [UIAlertAction actionWithTitle:@"退出登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
-            
-            [self loginOutActoin:nil];
-            
-                                        }];
-        [alert addAction:actionOK];
-        [alert addAction:actionCancel];
-        [self presentViewController:alert animated:YES completion:nil];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"注销" message:@"是否退出本次登陆的账号?"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *actionCancel =  [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)
+                                    {
+                                        
+                                    }];
+    UIAlertAction *actionOK     =  [UIAlertAction actionWithTitle:@"退出系统" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
         
-    }
+        [self loginOutActoin:nil];
+        
+    }];
+    [alert addAction:actionOK];
+    [alert addAction:actionCancel];
+    [self presentViewController:alert animated:YES completion:nil];
+    
     
 }
 
@@ -106,7 +103,7 @@ static NotiSettingViewController* _nsvc;
     [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         NSError *err=nil;
@@ -146,7 +143,7 @@ static NotiSettingViewController* _nsvc;
     [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         NSError *err=nil;
@@ -164,6 +161,7 @@ static NotiSettingViewController* _nsvc;
                 bean.processid = info[@"objid"];
                 bean.title = info[@"title"];
                 bean.iconnew = info[@"iconnew"];
+                bean.type= [info[@"type"] integerValue];
 
                 [data addObject:bean];
             }

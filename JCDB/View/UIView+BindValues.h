@@ -29,7 +29,4 @@
 
 @property (nonatomic, strong) NSString *datatype;
 
-
-@property (nonatomic, assign) NSInteger *cnt;
-
 @end

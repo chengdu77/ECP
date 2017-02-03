@@ -1,4 +1,6 @@
 platform :ios, ‘8.0’
 inhibit_all_warnings!
-pod 'Pgyer'
-pod 'PgyUpdate'
+target "JCDB" do
+pod 'MJRefresh'
+pod 'TYPagerController'
+end

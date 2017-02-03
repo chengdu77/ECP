@@ -10,6 +10,7 @@
 #import "WorkOrderDetailsViewController.h"
 #import "WorkOrderCell.h"
 #import "WorkOrderBean.h"
+#import "MJRefresh.h"
 
 @interface FavoriteViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>{
     UITableView *_tableView;
@@ -49,13 +50,16 @@
         [findArray addObject:bean.title];
     }
     
-    
-//    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetHeight(_tableView.frame) +10);
-    
     [_tableView reloadData];
     
-//    [self.scrollView set];
+    _tableView.tableFooterView = [self tableViewFooterView];
+    
+}
 
+- (UIView *)tableViewFooterView{
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,self.viewWidth, 65)];
+    footerView.backgroundColor = [UIColor clearColor];
+    return footerView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,6 +122,7 @@
     details.hasFavorite = NO;
     details.processid = bean.processid;
     details.currentnode = bean.currentnode;
+    details.type = bean.type;
     [details setSuccessRefreshViewBlock:^{
 //        [self reloadDataWithPageTag:0 withPageNumber:0];
     }];

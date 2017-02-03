@@ -14,9 +14,8 @@
 
 #import "UIView+WZLBadge.h"
 #import "StaffContactsViewController.h"
-#import "WorkOrderListViewController.h"
 #import "MyPhotographViewController.h"
-#import "EndMatterListViewController.h"
+#import "EndMatterPageViewController.h"
 #import "ScheduleInfoViewController.h"
 #import "ChartListViewController.h"
 #import "MessageViewController.h"
@@ -29,6 +28,8 @@
 #import "NotiSettingViewController.h"
 #import "DBListViewController.h"
 
+#import "DXPopover.h"
+
 #define kDaibanRedPointViewTag 100
 #define kQqwwcRedPointViewTag 101
 #define kYibanRedPointViewTag 102
@@ -39,6 +40,9 @@
     NSArray *wfprocessValues;
     
     NSTimer *timer;
+    
+    UIView *foundView;
+    UITextField *foundTextField;
 }
 
 
@@ -47,6 +51,10 @@
 
 @property (nonatomic, strong) NSString *jingweidu;
 @property (nonatomic, strong) NSString *didian;
+
+@property (nonatomic ,strong) UIView *falsePushView;//伪推送View
+
+@property (nonatomic, strong) DXPopover *popover;
 
 @end
 
@@ -57,8 +65,60 @@
 
 }
 
+- (void)initPopFoundView {
+    
+    _popover = [DXPopover new];
+    _popover.cornerRadius = 0;
+    _popover.arrowSize = CGSizeMake(26, 12);
+    
+    foundView = [[UIView alloc] init];
+    foundView.frame = CGRectMake(0, 0, self.viewWidth, 90);
+    foundView.backgroundColor = [UIColor whiteColor];
+    
+
+    foundTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, self.viewWidth-20, 30)];
+    foundTextField.borderStyle = UITextBorderStyleRoundedRect;
+    foundTextField.placeholder=@"请输入搜索";
+    foundTextField.font = [UIFont systemFontOfSize:11.0];
+    [foundView addSubview:foundTextField];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame=CGRectMake(self.viewWidth-70, 50, 49, 30);
+    btn.backgroundColor = kALLBUTTON_COLOR;
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn setTitle:@"确定" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(okActoin:) forControlEvents:UIControlEventTouchUpInside];
+    [foundView addSubview:btn];
+
+}
+
+- (void)okActoin:(id)sender{
+    
+    NSString *found = foundTextField.text;
+    if (found.length == 0) {
+        [MBProgressHUD showError:@"请输入有效内容" toView:self.view.window];
+        return;
+    }
+    
+    [self.popover dismiss];
+    
+    MessageViewController *messageViewController = MessageViewController.new;
+    messageViewController.listFlag=@"1";
+    messageViewController.foundValue=@"测试";
+    [self.navigationController pushViewController:messageViewController animated:YES];
+    
+    foundTextField.text = @"";
+}
+
+- (void)findAction{
+    
+    CGPoint startPoint = CGPointMake(self.viewWidth-70,64);
+    [_popover showAtPoint:startPoint popoverPostion:DXPopoverPositionDown withContentView:foundView inView:self.view];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     
+    [self.tabBarController.tabBar setHidden:NO];
 }
 
 - (void)initJGGMenuView{
@@ -198,7 +258,11 @@
     [super viewDidLoad];
     self.title=@"首页";
     
+    [self initPopFoundView];
+    
     [self initJGGMenuView];
+    
+    [self initFalsePushView];
     
     [self redPoint];
     
@@ -216,14 +280,20 @@
     self.navigationItem.leftBarButtonItem = settingButton;
     
     
+    
+    UIBarButtonItem *findButton = [[UIBarButtonItem alloc] initWithTitle:@"搜索"
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(findAction)];
+    
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithTitle:@"刷新"
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(myselfInfo)];
-    NSArray *buttonArray = [[NSArray alloc]initWithObjects:refreshButton,nil];
+    NSArray *buttonArray = [[NSArray alloc]initWithObjects:refreshButton,findButton,nil];
     self.navigationItem.rightBarButtonItems = buttonArray;
     
-    __block __weak FirstViewController *wself = self;
+    __weak FirstViewController *wself = self;
     [[CCLocationManager shareLocation] getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
         wself.jingweidu = [NSString stringWithFormat:@"%f,%f",locationCorrrdinate.longitude,locationCorrrdinate.latitude];
     } withAddress:^(NSString *addressString) {
@@ -232,6 +302,67 @@
 
     }];
     
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(falsePushAction:) name: @"FalsePushNotification" object:nil];
+    
+}
+
+
+#pragma mark 伪推送View
+- (void)initFalsePushView{
+    
+    self.falsePushView = [UIView new];
+    self.falsePushView.frame = CGRectMake(0, 64, self.viewWidth, 40);
+    self.falsePushView.backgroundColor = RGB(51,153,0);
+    [self.view addSubview:self.falsePushView];
+    
+    self.falsePushLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0,self.viewWidth-20,40)];
+    self.falsePushLabel.textColor = [UIColor whiteColor];
+    self.falsePushLabel.font = [UIFont systemFontOfSize:11.0];
+    [self.falsePushView addSubview:self.falsePushLabel];
+    [self.falsePushView setHidden:YES];
+    
+    UITapGestureRecognizer *falsePushGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideFalsePush)];
+    [self.falsePushView addGestureRecognizer:falsePushGesture];
+
+}
+
+- (void)falsePushAction:(NSNotification* )note{
+    NSString *value = note.object;
+    self.falsePushLabel.text = value;
+    if (!self.iv_netstate.hidden) {
+        return;
+    }
+    if(self.falsePushView.hidden){
+        [self showFalsePush];
+    }
+}
+
+#pragma mark 显示伪推送View
+- (void)showFalsePush{
+    self.falsePushView.hidden = NO;
+    self.falsePushView.layer.opacity = 0.0;
+    CGRect rect = self.view.bounds;
+    rect.size.height -= self.falsePushView.frame.size.height;
+    rect.origin.y += self.falsePushView.frame.size.height;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.falsePushView.layer.opacity = 1.0;
+         self.scrollView.frame = rect;
+    }completion:^(BOOL finished) {
+        [self.falsePushView bringSubviewToFront:self.view];
+    }];
+    
+}
+
+#pragma mark 隐藏伪推送View
+- (void)hideFalsePush{
+    CGRect rect = self.view.bounds;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.falsePushView.layer.opacity = 0.0;
+         self.scrollView.frame = rect;
+    } completion:^(BOOL finished) {
+        self.falsePushView.hidden = YES;
+        [self messageActoin:nil];
+    }];
 }
 
 - (void)myselfInfo{
@@ -243,7 +374,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         NSError *err=nil;
@@ -391,9 +522,6 @@
     UIView *view = sender.view;
     
     if (view.tag == 5){
-//        WorkOrderListViewController *workOrderListViewController = [WorkOrderListViewController new];
-//        workOrderListViewController.title = @"事项";
-//        workOrderListViewController.state = @"getwfprocessDBlist";
         
         DBListViewController *listViewController = DBListViewController.new;
         listViewController.title = @"待办事项";
@@ -402,9 +530,10 @@
     }
     
     if (view.tag == 6){
-        EndMatterListViewController *endMatterListViewController =[EndMatterListViewController new];
-        endMatterListViewController.state = @"getwfprocessWJlist";
-        [self.navigationController pushViewController:endMatterListViewController animated:YES];
+        EndMatterPageViewController *endMatterPageViewController =[EndMatterPageViewController new];
+//        endMatterPageViewController.showNavBar = YES;
+//        endMatterPageViewController.barStyle = TYPagerBarStyleCoverView;
+        [self.navigationController pushViewController:endMatterPageViewController animated:YES];
     }
     
     if (view.tag == 7){
@@ -495,7 +624,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

@@ -46,9 +46,9 @@
 @property (nonatomic,strong) NSNumber *logged;
 @property (nonatomic,strong) NSNumber *prompt;
 @property (nonatomic,strong) NSString *validateexpr;
-@property (nonatomic,strong) NSString *fileName;
 @property (nonatomic) NSString *bemulti;
 @property (nonatomic,strong) NSString *tablename;
+@property (nonatomic,strong) NSString *fileName;
 
 @end
 

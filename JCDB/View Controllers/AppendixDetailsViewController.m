@@ -141,7 +141,6 @@
             textField.frame = rect;
             textField.text = value;
             textField.value = value;
-//            textField.tag = tag;
             textField.fieldType = fieldType;
             textField.Id = bean.Id;
             textField.fieldname = bean.fieldname;
@@ -149,8 +148,6 @@
             //小数
             if ([bean.datatype isEqualToString:@"3"]) {
                 textField.keyboardType = UIKeyboardTypeDecimalPad;
-                
-//                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:textField];
             }
             //整数
             if ([bean.datatype isEqualToString:@"2"]){
@@ -172,7 +169,7 @@
                 textField.placeholder = @"可输入修改";
             }
             
-            textField.layer.borderColor = kALLBUTTON_COLOR.CGColor;
+            textField.layer.borderColor = self.canEditFlag?kALLBUTTON_COLOR.CGColor:kBackgroundColor.CGColor;
             textField.layer.borderWidth = .5;
             textField.layer.cornerRadius = 6;
             [textField.layer setMasksToBounds:YES];
@@ -216,8 +213,7 @@
             
             if ([fieldType isEqualToString:kSingleListField] || [fieldType isEqualToString:kMoreListField] ||[fieldType isEqualToString:kDateField]  ||[fieldType isEqualToString:kTimeField] || [fieldType isEqualToString:kSelectListField]) {
                 
-//                bLabel.backgroundColor = RGB(230, 233, 238);
-                bLabel.layer.borderColor = kBackgroundColor.CGColor;
+                bLabel.layer.borderColor = self.canEditFlag?kALLBUTTON_COLOR.CGColor:kBackgroundColor.CGColor;
                 bLabel.layer.borderWidth = .5;
                 bLabel.layer.cornerRadius = 6;
                 [bLabel.layer setMasksToBounds:YES];
@@ -290,45 +286,49 @@
                 
                 NSArray *array = [value componentsSeparatedByString:@","];
                 NSArray *files = [fileName componentsSeparatedByString:@","];
-              
-                for (int c =0;c<array.count;c++) {
-                    NSString * filename = files[c];
-                    NSString * fileid = array[c];
-                    
-                    UIButton *fujianButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    fujianButton.frame = rect;
-                    fujianButton.value = fileid;
-                    fujianButton.Id = filename;
-                    fujianButton.titleLabel.font = [UIFont fontWithName:kFontName size:14];
-                    fujianButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-                    fujianButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                    [fujianButton setTitle:filename forState:UIControlStateNormal];
-                    [fujianButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                    [fujianButton setBackgroundColor:[UIColor whiteColor]];
-                    [fujianButton addTarget:self action:@selector(fujianPreviewerAction:) forControlEvents:UIControlEventTouchUpInside];
-                    [view addSubview:fujianButton];
-                    
-                    CGRect frame2=CGRectMake(self.viewWidth-80,CGRectGetMinY(fujianButton.frame)+5,60,26);
-                    UIButton *delButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                    delButton.frame = frame2;
-                    delButton.titleLabel.font = [UIFont fontWithName:kFontName size:14];
-                    delButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-                    [delButton setTitle:@"删除" forState:UIControlStateNormal];
-                    [delButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-                    [delButton setBackgroundColor:[UIColor whiteColor]];
-                    [delButton addTarget:self action:@selector(delAction:) forControlEvents:UIControlEventTouchUpInside];
-                    delButton.tag = index+900;
-                    [view addSubview:delButton];
-                    delButton.layer.borderColor = [UIColor redColor].CGColor;
-                    delButton.layer.borderWidth = .5;
-                    delButton.layer.cornerRadius = 5;
-                    delButton.value = fileid;
-                    delButton.Id = filename;
-                    delButton.newValue = bean.Id;
-                    delButton.fieldname = bean.fieldname;
-                    
-                    if (c < array.count-1) {
-                        rect.origin.y = CGRectGetMaxY(rect)+5;
+                
+                if (array.count == files.count){
+                    for (int c =0;c<array.count;c++) {
+                        NSString * filename = files[c];
+                        NSString * fileid = array[c];
+                        
+                        UIButton *fujianButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                        fujianButton.frame = rect;
+                        fujianButton.value = fileid;
+                        fujianButton.Id = filename;
+                        fujianButton.titleLabel.font = [UIFont fontWithName:kFontName size:14];
+                        fujianButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+                        fujianButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                        [fujianButton setTitle:filename forState:UIControlStateNormal];
+                        [fujianButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                        [fujianButton setBackgroundColor:[UIColor whiteColor]];
+                        [fujianButton addTarget:self action:@selector(fujianPreviewerAction:) forControlEvents:UIControlEventTouchUpInside];
+                        [view addSubview:fujianButton];
+                        
+                        if (self.canEditFlag) {
+                            CGRect frame2=CGRectMake(self.viewWidth-80,CGRectGetMinY(fujianButton.frame)+5,60,26);
+                            UIButton *delButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                            delButton.frame = frame2;
+                            delButton.titleLabel.font = [UIFont fontWithName:kFontName size:14];
+                            delButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                            [delButton setTitle:@"删除" forState:UIControlStateNormal];
+                            [delButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+                            [delButton setBackgroundColor:[UIColor whiteColor]];
+                            [delButton addTarget:self action:@selector(delAction:) forControlEvents:UIControlEventTouchUpInside];
+                            delButton.tag = index+900;
+                            [view addSubview:delButton];
+                            delButton.layer.borderColor = [UIColor redColor].CGColor;
+                            delButton.layer.borderWidth = .5;
+                            delButton.layer.cornerRadius = 5;
+                            delButton.value = fileid;
+                            delButton.Id = filename;
+                            delButton.newValue = bean.Id;
+                            delButton.fieldname = bean.fieldname;
+                        }
+                        
+                        if (c < array.count-1) {
+                            rect.origin.y = CGRectGetMaxY(rect)+5;
+                        }
                     }
                 }
                 
@@ -733,7 +733,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
@@ -874,24 +874,23 @@
         title = @"请选择时间：时分\n\n\n\n\n\n\n\n\n\n\n\n";
     }
     
-    if (IOS8_OR_LATER) {
-        picer.frame = CGRectMake(-20, 40, self.viewWidth, 200);
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            NSDate *date = picer.date;
-            if ([label.fieldType isEqualToString:kDateField]) {
-                label.text = [date stringWithFormat:@"yyyy-MM-dd"];
-                label.value = [date stringWithFormat:@"yyyy-MM-dd"];
-            }else{
-                label.text = [date stringWithFormat:@"HH:mm"];
-                label.value = [date stringWithFormat:@"HH:mm"];
-            }
-        }];
-        [alertController.view addSubview:picer];
-        [alertController addAction:cancleAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }
+    picer.frame = CGRectMake(-20, 40, self.viewWidth, 200);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSDate *date = picer.date;
+        if ([label.fieldType isEqualToString:kDateField]) {
+            label.text = [date stringWithFormat:@"yyyy-MM-dd"];
+            label.value = [date stringWithFormat:@"yyyy-MM-dd"];
+        }else{
+            label.text = [date stringWithFormat:@"HH:mm"];
+            label.value = [date stringWithFormat:@"HH:mm"];
+        }
+    }];
+    [alertController.view addSubview:picer];
+    [alertController addAction:cancleAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+
 }
 - (void)submitAction:(id)sender{
     

@@ -26,6 +26,6 @@
 /**
  *快速实例化该对象模型
  */
-- (instancetype)initWithParentId:(int)parentId nodeId:(int)nodeId name:(NSString *)name depth:(int)depth expand:(BOOL)expand Id:(NSString *)Id leaf:(BOOL)leaf checked:(BOOL)checked;
+- (instancetype)initWithParentId:(NSInteger)parentId nodeId:(NSInteger)nodeId name:(NSString *)name depth:(NSInteger)depth expand:(BOOL)expand Id:(NSString *)Id leaf:(BOOL)leaf checked:(BOOL)checked;
 
 @end

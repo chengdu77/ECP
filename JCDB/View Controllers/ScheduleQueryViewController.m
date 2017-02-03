@@ -166,19 +166,19 @@
     
     UIDatePicker *picer = [[UIDatePicker alloc] init];
     picer.datePickerMode = UIDatePickerModeDate;
-    if (IOS8_OR_LATER) {
-        picer.frame = CGRectMake(-20, 40, 320, 200);
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择\n\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            NSDate *date = picer.date;
-            UILabel *timeLabel = (UILabel *)sender.view;
-            timeLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
-        }];
-        [alertController.view addSubview:picer];
-        [alertController addAction:cancleAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }
+    
+    picer.frame = CGRectMake(-20, 40, 320, 200);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择\n\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSDate *date = picer.date;
+        UILabel *timeLabel = (UILabel *)sender.view;
+        timeLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
+    }];
+    [alertController.view addSubview:picer];
+    [alertController addAction:cancleAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
 }
 
 - (UIButton *)buttonForTitle:(NSString *)title action:(SEL)action{
@@ -264,7 +264,7 @@
     
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

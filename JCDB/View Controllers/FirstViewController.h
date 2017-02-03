@@ -15,7 +15,6 @@
     UILabel *bmLabel;
     UIButton *messageButton;
     UIButton *signButton;
-
 }
 
 @end

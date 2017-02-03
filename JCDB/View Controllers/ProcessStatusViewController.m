@@ -34,17 +34,12 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
 }
 
 - (void)requestData{
     
     NSString *test = @"%@/ext/com.cinsea.action.WfprocessgraphAction?action=getWfprocessgraph&workflowid=%@&processid=%@";
     
-#if defined(DEBUG)||defined(_DEBUG)
-    self.workflowid = @"297e9e79544c9dd101545127a5d90074";
-    self.processid = @"297e9e79547b0eef01547fe442ec07e3";
-#endif
     NSString *urlStr = [NSString stringWithFormat:test,self.serviceIPInfo,self.workflowid,self.processid];
     
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -53,7 +48,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err = nil;
@@ -141,7 +136,7 @@
 
 - (void)loadModel{
     _currentRow = -1;
-    _headViewArray = [[NSMutableArray alloc]init ];
+    _headViewArray = [[NSMutableArray alloc] init];
     for(int i = 0;i< jsonList.count ;i++){
         ProcessStatusHeadView* headview = [[ProcessStatusHeadView alloc] initWithFrame:CGRectMake(0, 0, self.viewWidth, 40)];
         headview.delegate = self;
@@ -214,6 +209,7 @@
     cell.acceptTimeLabel.text = [NSString stringWithFormat:@"接受时间：%@",receivetime];
     cell.operateTimeLabel.text = [NSString stringWithFormat:@"操作时间：%@",datetime];
     cell.timeLabel.text = [NSString stringWithFormat:@"耗时：%@",elapsedtime];
+    cell.statusLabel.text = data[@"opttype"]?data[@"opttype"]:@"未提交";
 
     NSString *urlStr = data[@"phototUrl"];
     [self roundImageView:cell.txImageView withColor:kALLBUTTON_COLOR];

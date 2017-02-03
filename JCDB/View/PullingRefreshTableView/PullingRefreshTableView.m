@@ -7,7 +7,6 @@
 //
 
 #import "PullingRefreshTableView.h"
-//#import "EGORefreshTableHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kPROffsetY 60.f
@@ -257,6 +256,7 @@
         _footerView.atTop = NO;
         [self addSubview:_footerView];
         
+  
         [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
         
     }

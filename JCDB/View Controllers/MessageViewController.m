@@ -10,16 +10,15 @@
 #import "WorkOrderDetailsViewController.h"
 #import "WorkOrderCell.h"
 #import "WorkOrderBean.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 
-@interface MessageViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>{
+@interface MessageViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>{
     
-    PullingRefreshTableView *_tableView;
+    UITableView *_tableView;
     
     NSMutableArray *listArray;//数据
-    NSInteger pageNumber;
+    NSInteger pageIndex;
 }
-
 
 @end
 
@@ -28,8 +27,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息列表";
+    if (self.listFlag.length>0)
+        self.title = @"查询结果";
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-     pageNumber = 1;
+    pageIndex = 1;
     [self requestData];
 }
 
@@ -44,7 +49,7 @@
         [_tableView removeFromSuperview];
     }
     
-    _tableView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0,0,self.viewWidth,self.viewHeight) pullingDelegate:self];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,self.viewWidth,self.viewHeight)];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -55,6 +60,38 @@
     [self reloadData];
     
     [self.scrollView addSubview:_tableView];
+    
+    __weak MessageViewController *weakSelf = self;
+    __weak UITableView *tableView = _tableView;
+    
+    // 下拉刷新
+    tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            pageIndex ++;
+            [weakSelf reloadData];
+            // 结束刷新
+            [tableView.mj_header endRefreshing];
+        });
+    }];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    tableView.mj_header.automaticallyChangeAlpha = YES;
+    
+    // 上拉刷新
+    tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            pageIndex --;
+            if (pageIndex < 1) {
+                pageIndex = 1;
+            }
+            [weakSelf reloadData];
+            // 结束刷新
+            [tableView.mj_footer endRefreshing];
+        });
+    }];
+    
 }
 
 #pragma mark -- talbeView的代理方法
@@ -116,46 +153,16 @@
     details.currentnode = bean.currentnode;
     details.hasFavorite = YES;
     [details setSuccessRefreshViewBlock:^{
-        [self reloadDataWithPageNumber:pageNumber];
+        [self reloadDataWithPageNumber:pageIndex];
     }];
     [self.navigationController pushViewController:details animated:YES];
 }
 
-
-
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
-    pageNumber++;
-    [self reloadDataWithPageNumber:pageNumber];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate{
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *currentDateStr = [df stringFromDate:[NSDate date]];
-    NSDate *date = [df dateFromString:currentDateStr];
-    return date;
-}
-
-- (NSDate *)pullingTableViewLoadingFinishedDate{
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *currentDateStr = [df stringFromDate:[NSDate date]];
-    NSDate *date = [df dateFromString:currentDateStr];
-    return date;
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
-    pageNumber++;
-    [self reloadDataWithPageNumber:pageNumber];
-}
-
 - (void)reloadData{
     
+    [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
-    [_tableView tableViewDidFinishedLoading];
-    _tableView.reachedTheEnd = NO;
-    
+ 
 }
 
 - (void)reloadDataWithPageNumber:(NSInteger)pageNum{
@@ -165,23 +172,12 @@
 }
 
 
-//拖拽后调用的方法
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    [_tableView tableViewDidEndDragging:scrollView];
-}
-
--(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
-    [self scrollViewDidEndDecelerating:scrollView];
-    
-}
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [_tableView tableViewDidScroll:scrollView];
-}
-
 - (void)requestData{
-
-    NSString *urlStr = [NSString stringWithFormat:kURL_NotifyAction,self.serviceIPInfo];
+    
+    NSString *urlStr = [NSString stringWithFormat:kURL_NotifyAction,self.serviceIPInfo,@(pageIndex)];
+    
+    if (self.listFlag.length >0)//搜索
+        urlStr = [NSString stringWithFormat:kURL_FoundAction,self.serviceIPInfo,self.foundValue,@(pageIndex)];
     
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -189,7 +185,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err = nil;

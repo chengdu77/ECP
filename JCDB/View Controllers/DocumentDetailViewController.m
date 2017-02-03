@@ -33,7 +33,7 @@
         NSArray *buttonArray = [[NSArray alloc]initWithObjects:replyHistoryButton,nil];
         self.navigationItem.rightBarButtonItems = buttonArray;
     }
-    
+
     CGRect frame = self.scrollView.bounds;
     frame.origin.y = 10;
     frame.size.height -=10;
@@ -135,7 +135,8 @@
 - (void)imageCliecked:(UITapGestureRecognizer *)sender {
     
     UIImageView *imv = (UIImageView *)sender.view;
-    [SJAvatarBrowser showImage:imv];
+    if (imv.image)
+        [SJAvatarBrowser showImage:imv];
     
 }
 

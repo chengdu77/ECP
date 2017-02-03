@@ -1,13 +1,15 @@
 PODS:
-  - Pgyer (2.8.4)
-  - PgyUpdate (1.2)
+  - MJRefresh (3.1.12)
+  - TYPagerController (1.0.2)
 
 DEPENDENCIES:
-  - Pgyer
-  - PgyUpdate
+  - MJRefresh
+  - TYPagerController
 
 SPEC CHECKSUMS:
-  Pgyer: 26edfcc8da6da6383fabfdbccd2f77c623b9d6eb
-  PgyUpdate: a42e82cec5ad4e992af390e9d494f6fc62db65e4
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  TYPagerController: 0b3e3e589a217ff537d5f78e1e76594beaa4cfc6
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 29beb74f6d778ebe7e6f7a7d11178d7d8faf34f3
+
+COCOAPODS: 1.1.0.beta.2

@@ -234,7 +234,10 @@ static const NSTimeInterval kWobbleTime = 1.0;
 }
 
 -(void)magnifyImage:(UITapGestureRecognizer*)tap{
-    [SJAvatarBrowser showImage:(UIImageView*)tap.view];
+    
+    UIImageView *imv = (UIImageView *)tap.view;
+    if (imv.image)
+    [SJAvatarBrowser showImage:imv];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer{

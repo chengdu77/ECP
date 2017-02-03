@@ -231,7 +231,8 @@
 - (void)imageCliecked:(UITapGestureRecognizer *)sender {
    
     UIImageView *imv = (UIImageView *)sender.view;
-    [SJAvatarBrowser showImage:imv];
+    if (imv.image)
+        [SJAvatarBrowser showImage:imv];
 
 }
 

@@ -51,7 +51,7 @@
     [self setCookie:url];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
@@ -194,7 +194,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         NSError *err=nil;

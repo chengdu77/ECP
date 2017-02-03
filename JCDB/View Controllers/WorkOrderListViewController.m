@@ -8,7 +8,6 @@
 
 #import "WorkOrderListViewController.h"
 #import "WorkOrderDetailsViewController.h"
-#import "LeaveSlideView.h"
 #import "WorkOrderCell.h"
 #import "WorkOrderBean.h"
 #import "DeviceViewController.h"
@@ -57,7 +56,7 @@
     self.navigationItem.rightBarButtonItem = businessButton;
     
 //    业务分类
-    [self getYWFLData:self.state];
+//    [self getYWFLData:self.state];
     
 }
 
@@ -67,63 +66,6 @@
     [self queryWithState:self.state withPage:defaultTag];
 }
 
-#pragma mark 业务分类
-- (void)getYWFLData:(NSString *)state{
-    
-    NSString *serviceStr = nil;
-    // @"需办",@"未完成",@"已办"
-    if ([state isEqualToString:@"getwfprocessDBlist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessDBAction?action=getWfdefine&action=getwfprocessDBlist&pageIndex=1",self.serviceIPInfo];
-    }
-    
-    if ([state isEqualToString:@"getwfprocesslist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessqqwwcAction?action=getWfdefine&action=getwfprocessDBlist&pageIndex=1",self.serviceIPInfo];
-    }
-    
-    if ([state isEqualToString:@"getwfprocessYBlist"]) {
-        serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.WfprocessYBAction?action=getWfdefine&action=getwfprocessDBlist&pageIndex=1",self.serviceIPInfo];
-    }
-    
-    if (ywflData.count >0) {
-        [ywflData removeAllObjects];
-    }else {
-        ywflData = [NSMutableArray array];
-    }
-    if (ywflName.count >0) {
-        [ywflName removeAllObjects];
-    }else {
-        ywflName = [NSMutableArray array];
-    }
-    
-    NSURL *url = [NSURL URLWithString:serviceStr];
-    [self setCookie:url];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
-    [request setCompletionBlock:^{
-        
-        NSError *err=nil;
-        NSData *responseData = [weakRequest responseData];
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
-        
-        if ([dic[@"success"] integerValue] == kSuccessCode){
-            NSArray *result = dic[@"result"];
-            for (NSDictionary *info in result){
-                NSString *objname = info[@"objname"];
-                NSInteger wfnum = [info[@"wfnum"] integerValue];
-                NSString *workflowid_ = info[@"workflowid"];
-                NSString *key = [NSString stringWithFormat:@"%@(%ld)",objname,(long)wfnum];
-                [ywflName addObject:key];
-                [ywflData addObject:workflowid_];
-            }
-        }else{
-            [MBProgressHUD showError:dic[@"msg"] toView:self.view.window];
-        }
-    }];
-    
-    
-    [request startAsynchronous];
-    
-}
 
 #pragma -mark 增加按钮点击事件
 - (void)addAction:(id)sender{
@@ -132,7 +74,7 @@
     
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         NSError *err=nil;
@@ -173,31 +115,31 @@
 #pragma -mark 业务分类按钮点击事件
 - (void)businessAction:(id)sender{
     
-    if (ywflName.count ==0) {
-        [MBProgressHUD showError:kErrorInfomation toView:self.view.window];
-        return;
-    }
-    
-    DeviceViewController *deviceViewController = [[DeviceViewController alloc] init];
-    deviceViewController.infos = ywflName;
-    deviceViewController.title = @"业务分类";
-    [self.navigationController pushViewController:deviceViewController animated:YES];
-    
-    [deviceViewController setDeviceTypeBlock:^(NSInteger deviceId, NSString *deviceName) {
-        
-        if (![workflowid isEqualToString:deviceName]) {
-            if ([deviceName hasPrefix:@"全部"]) {
-                workflowid = @"";
-            }else{
-                
-                workflowid = ywflData[deviceId];
-            }
-        }
-        
-        [self getYWFLData:self.state];
-        [self queryWithState:self.state withPage:defaultTag];
-      
-    }];
+//    if (ywflName.count ==0) {
+//        [MBProgressHUD showError:kErrorInfomation toView:self.view.window];
+//        return;
+//    }
+//    
+//    DeviceViewController *deviceViewController = [[DeviceViewController alloc] init];
+//    deviceViewController.infos = ywflName;
+//    deviceViewController.title = @"业务分类";
+//    [self.navigationController pushViewController:deviceViewController animated:YES];
+//    
+//    [deviceViewController setDeviceTypeBlock:^(NSInteger deviceId, NSString *deviceName) {
+//        
+//        if (![workflowid isEqualToString:deviceName]) {
+//            if ([deviceName hasPrefix:@"全部"]) {
+//                workflowid = @"";
+//            }else{
+//                
+//                workflowid = ywflData[deviceId];
+//            }
+//        }
+//        
+//        [self getYWFLData:self.state];
+//        [self queryWithState:self.state withPage:defaultTag];
+//      
+//    }];
     
 }
 
@@ -277,7 +219,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;
@@ -422,7 +364,7 @@
     }
     
     self.state = state;
-    [self getYWFLData:state];
+//    [self getYWFLData:state];
     
     
     NSString *serviceStr = nil;
@@ -466,7 +408,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

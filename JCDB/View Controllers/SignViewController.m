@@ -181,7 +181,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     NSURL *url = [NSURL URLWithString:urlStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

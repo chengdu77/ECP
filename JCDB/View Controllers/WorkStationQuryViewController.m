@@ -8,6 +8,7 @@
 
 #import "WorkStationQuryViewController.h"
 #import "WorkOrderDetailsViewController.h"
+#import "MJRefresh.h"
 
 @interface WorkStationQuryViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_tableView;
@@ -22,8 +23,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self requestData];
     
+    [self initThisView];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,7 +43,7 @@
     [self setCookie:url];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
@@ -58,7 +60,8 @@
             _listData = [NSArray arrayWithArray:result];
             
             if (result.count >0) {
-                [self initThisView];
+                [_tableView.mj_header endRefreshing];
+                [_tableView reloadData];
             }else {
                 [MBProgressHUD showError:kErrorInfomation toView:self.view.window];
             }
@@ -77,20 +80,43 @@
 
 - (void)initThisView{
     
-    if (_tableView) {
-        [_tableView removeFromSuperview];
-    }
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, self.scrollView.frame.size.width, self.scrollView.frame.size.height)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, self.viewWidth,self.scrollView.frame.size.height)];
     
     _tableView.dataSource = self;
     _tableView.delegate = self;
     [self.scrollView addSubview:_tableView];
     _tableView.backgroundColor = kBackgroundColor;
     
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetHeight(_tableView.frame) +10);
     
-    [_tableView reloadData];
+    [self requestData];
+
+    __weak WorkStationQuryViewController *weakSelf = self;
+    __weak UITableView *tableView = _tableView;
+    // 下拉刷新
+    tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf requestData];
+            // 结束刷新
+            [tableView.mj_header endRefreshing];
+        });
+    }];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    tableView.mj_header.automaticallyChangeAlpha = YES;
+    
+    // 上拉刷新
+    tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf requestData];
+            // 结束刷新
+            [tableView.mj_footer endRefreshing];
+        });
+    }];
+    
 }
+
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

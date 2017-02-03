@@ -33,6 +33,7 @@
     
     self.tabBar.delegate=self;
 
+
 }
 
 - (void)didReceiveMemoryWarning{
@@ -43,7 +44,7 @@
 -(void)tabBar:(UITabBar*)atabBar didSelectItem:(UITabBarItem*)item{
     
     CATransition* animation = [CATransition animation];
-    [animation setDuration:0.7f];
+    [animation setDuration:0.5f];
     [animation setType:kCATransitionFade];
     [animation setSubtype:kCATransitionFromRight];
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];

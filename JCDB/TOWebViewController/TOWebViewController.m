@@ -77,6 +77,9 @@ static const float kInitialProgressValue                = 0.1f;
 static const float kBeforeInteractiveMaxProgressValue   = 0.5f;
 static const float kAfterInteractiveMaxProgressValue    = 0.9f;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+
 #pragma mark -
 #pragma mark Loading Bar Private Interface
 @interface TOWebLoadingView : UIView
@@ -1660,3 +1663,5 @@ static const float kAfterInteractiveMaxProgressValue    = 0.9f;
 }
 
 @end
+
+#pragma clang diagnostic pop

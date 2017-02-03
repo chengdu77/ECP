@@ -8,6 +8,7 @@
 
 #import "HeadViewController.h"
 #import "Reachability.h"
+#import "MyTransformAnimation.h"
 
 #define ORIGINAL_MAX_WIDTH 640.0f
 
@@ -81,7 +82,7 @@
 }
 @end
 
-@interface HeadViewController ()<UIGestureRecognizerDelegate>{
+@interface HeadViewController ()<UIGestureRecognizerDelegate,UINavigationControllerDelegate>{
    
 }
 
@@ -125,25 +126,13 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapNetworkAction:)];
     [self.iv_netstate addGestureRecognizer:tapGesture];
     
-    self.falsePushView = [UIView new];
-    self.falsePushView.frame = CGRectMake(0, 64, self.viewWidth, 40);
-    self.falsePushView.backgroundColor = RGB(51,153,0);
-     [self.view addSubview:self.falsePushView];
     
-    self.falsePushLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,0,self.viewWidth-20,40)];
-    self.falsePushLabel.textColor = [UIColor whiteColor];
-    self.falsePushLabel.font = [UIFont systemFontOfSize:11.0];
-    [self.falsePushView addSubview:self.falsePushLabel];
-    [self.falsePushView setHidden:YES];
-    
-    UITapGestureRecognizer *falsePushGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideFalsePush)];
-    [self.falsePushView addGestureRecognizer:falsePushGesture];
-
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.navigationController.delegate = self;//自定义转场delegate
 //    self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self initView];
@@ -158,8 +147,6 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
-    
-    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(falsePushAction:) name: @"FalsePushNotification" object:nil];
     
     self.serviceIPInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
 
@@ -178,15 +165,15 @@
     
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
     //行间距
-    paragraph.lineSpacing = 5;
+    paragraph.lineSpacing = 3;
     //段落间距
-    paragraph.paragraphSpacing = 5;
+    paragraph.paragraphSpacing = 3;
     //对齐方式
     paragraph.alignment = NSTextAlignmentLeft;
     //指定段落开始的缩进像素
     paragraph.firstLineHeadIndent = 0;
     //调整全部文字的缩进像素
-    paragraph.headIndent = 5;
+    paragraph.headIndent = 3;
     [attrStr addAttribute:NSParagraphStyleAttributeName
                     value:paragraph
                     range:NSMakeRange(0, [detail length])];
@@ -225,7 +212,7 @@
     return button;
 }
 
--(UIButton *)defaultBackButtonWithTitle:(NSString *)title{
+- (UIButton *)defaultBackButtonWithTitle:(NSString *)title{
     UIButton *button = [self defaultRightButtonWithTitle:title];
     return button;
 }
@@ -273,7 +260,9 @@
 
 
 -(void)reachabilityChanged: (NSNotification* )note {
-    Reachability* curReach = [Reachability reachabilityWithHostname:@"www.baidu.com"];
+    
+    Reachability* curReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    
     NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
     
     NetworkStatus netStatus = [curReach currentReachabilityStatus];
@@ -347,7 +336,7 @@
     NSString *serviceStr = [NSString stringWithFormat:@"%@%@",self.serviceIPInfo,urlValue];
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
          [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         NSError *err=nil;
@@ -760,41 +749,6 @@
     return newImage;
 }
 
-- (void)falsePushAction:(NSNotification* )note{
-    NSString *value = note.object;
-    self.falsePushLabel.text = value;
-    if (!self.iv_netstate.hidden) {
-        return;
-    }
-    if(self.falsePushView.hidden){
-        [self showFalsePush];
-    }
-}
-
--(void)showFalsePush{
-    self.falsePushView.hidden = NO;
-    self.falsePushView.layer.opacity = 0.0;
-    CGRect rect = self.view.bounds;
-    rect.size.height -= self.falsePushView.frame.size.height;
-    rect.origin.y += self.falsePushView.frame.size.height;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.falsePushView.layer.opacity = 1.0;
-        _scrollView.frame = rect;
-    }completion:^(BOOL finished) {
-        [self.falsePushView bringSubviewToFront:self.view];
-    }];
-    
-}
-
--(void)hideFalsePush{
-    CGRect rect = self.view.bounds;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.falsePushView.layer.opacity = 0.0;
-        _scrollView.frame = rect;
-    } completion:^(BOOL finished) {
-        self.falsePushView.hidden = YES;
-    }];
-}
 
 - (NSString*)uuid{
     CFUUIDRef puuid = CFUUIDCreate( nil );
@@ -806,5 +760,25 @@
     result = [result stringByReplacingOccurrencesOfString:@"-" withString:@""];
     return result;
 }
+
+#pragma mark 自定义转场动画
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC{
+    
+    
+    MyTransformAnimation *animation = [[MyTransformAnimation alloc] init];
+    if (operation == UINavigationControllerOperationPush) {
+        animation.transform = CGAffineTransformMakeTranslation(0.0,CGRectGetHeight(toVC.view.bounds));
+        return animation;
+    }
+    else if (operation == UINavigationControllerOperationPop) {
+        animation.transform = CGAffineTransformMakeTranslation(0.0,-CGRectGetHeight(toVC.view.bounds));
+        return animation;
+    }
+    return nil;
+}
+
 
 @end

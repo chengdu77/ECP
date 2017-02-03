@@ -22,6 +22,7 @@
 @property (nonatomic,strong) NSString *status;
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *iconnew;
+@property (nonatomic,assign) NSInteger type;
 
 @end
 

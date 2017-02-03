@@ -26,6 +26,8 @@
 #import "SSCheckBoxView.h"
 #import "UIHelpers.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
 
 static const CGFloat kHeight = 36.0f;
 
@@ -139,6 +141,9 @@ static const CGFloat kHeight = 36.0f;
     [super touchesCancelled:touches withEvent:event];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+
 - (void) touchesEnded:(NSSet *)touches
             withEvent:(UIEvent *)event
 {
@@ -172,6 +177,7 @@ static const CGFloat kHeight = 36.0f;
 
     [super touchesEnded:touches withEvent:event];
 }
+#pragma clang diagnostic pop
 
 - (BOOL) canBecomeFirstResponder
 {
@@ -223,3 +229,5 @@ static const CGFloat kHeight = 36.0f;
 }
 
 @end
+
+#pragma clang diagnostic pop

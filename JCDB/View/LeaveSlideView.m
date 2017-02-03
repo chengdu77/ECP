@@ -7,14 +7,14 @@
 //
 
 #import "LeaveSlideView.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "Constants.h"
 
 #import "MBProgressHUD.h"
 #import "MBProgressHUD+Add.h"
 
 #define TOPHEIGHT 45
-@interface LeaveSlideView()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>{
+@interface LeaveSlideView()<UITableViewDataSource,UITableViewDelegate>{//PullingRefreshTableViewDelegate
 
     NSInteger pageNumber;
     NSInteger rows;
@@ -121,6 +121,8 @@
     _topScrollView.bounces = NO;
     _topScrollView.delegate = self;
     
+    
+    
     if (_tabCount >= 6) {
         _topScrollView.contentSize = CGSizeMake(width * _tabCount, TOPHEIGHT);
 
@@ -158,7 +160,6 @@
     }
 }
 
-
 #pragma mark --点击顶部的按钮所触发的方法
 - (void)tabButton:(id)sender{
     UIButton *button = sender;
@@ -169,33 +170,86 @@
 #pragma mark --初始化下方的TableViews
 -(void) initDownTables{
     
-    for (int i=0; i<_tabCount; i++) {
+    __weak LeaveSlideView *weakSelf = self;
+//    for (int i=0; i<_tabCount; i++) {
+    
+//        PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(i * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT) pullingDelegate:self];
+    
+        UITableView *tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0 * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT)];
         
-        PullingRefreshTableView *tableView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(i * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT) pullingDelegate:self];
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.tag = i;//就是Page号 pageNumber
-        UINib *nib=[UINib nibWithNibName:_cellName bundle:[NSBundle mainBundle]];
-        [tableView registerNib:nib forCellReuseIdentifier:_cellName];
-
-
-        [_scrollTableViews addObject:tableView];
-        [_scrollView addSubview:tableView];
+        tableView1.delegate = self;
+        tableView1.dataSource = self;
+        tableView1.tag = 0;//就是Page号 pageNumber
+        
+        tableView1.tableFooterView = [self tableViewFooterView];
+        
+        UINib *nib1=[UINib nibWithNibName:_cellName bundle:[NSBundle mainBundle]];
+        [tableView1 registerNib:nib1 forCellReuseIdentifier:_cellName];
+        
+        tableView1.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            
+            [weakSelf reloadData];
+        }];
+        
+      
+        [_scrollTableViews addObject:tableView1];
+        [_scrollView addSubview:tableView1];
+//    }
+    
+    UITableView *tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(1 * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT)];
+    
+    tableView2.delegate = self;
+    tableView2.dataSource = self;
+    tableView2.tag = 0;//就是Page号 pageNumber
+    
+    tableView2.tableFooterView = [self tableViewFooterView];
+    
+    UINib *nib2=[UINib nibWithNibName:_cellName bundle:[NSBundle mainBundle]];
+    [tableView2 registerNib:nib2 forCellReuseIdentifier:_cellName];
+    
+    tableView2.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [weakSelf reloadData];
+    }];
+    
+    [_scrollTableViews addObject:tableView2];
+    [_scrollView addSubview:tableView2];
+    
+    if (_tabCount == 3) {
+        
+        UITableView *tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(2 * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT)];
+        
+        tableView3.delegate = self;
+        tableView3.dataSource = self;
+        tableView3.tag = 0;//就是Page号 pageNumber
+        
+        tableView3.tableFooterView = [self tableViewFooterView];
+        
+        UINib *nib3=[UINib nibWithNibName:_cellName bundle:[NSBundle mainBundle]];
+        [tableView3 registerNib:nib3 forCellReuseIdentifier:_cellName];
+        
+        tableView3.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            
+            [weakSelf reloadData];
+        }];
+        
+        [_scrollTableViews addObject:tableView3];
+        [_scrollView addSubview:tableView3];
+        
     }
+    
+}
+
+- (UIView *)tableViewFooterView{
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _mViewFrame.size.width, 65)];
+    footerView.backgroundColor = [UIColor clearColor];
+    return footerView;
 }
 
 
 #pragma mark --根据scrollView的滚动位置复用tableView，减少内存开支
 -(void) updateTableWithPageNumber:(NSUInteger)pageNum{
-//    NSUInteger tabviewTag = pageNum;
-//    
-//    CGRect tableNewFrame = CGRectMake(pageNumber * _mViewFrame.size.width,0, _mViewFrame.size.width, _mViewFrame.size.height - TOPHEIGHT);
-    
-//    PullingRefreshTableView *reuseTableView = _scrollTableViews[tabviewTag];
 
-//    reuseTableView.frame = tableNewFrame;
-//    [reuseTableView reloadData];
-//    [self reloadData];
 }
 
 #pragma mark -- scrollView的代理方法
@@ -212,18 +266,16 @@
         
         [_topScrollView setContentOffset:CGPointMake(sumStep, 0) animated:YES];
         return;
-    }else if ([scrollView isKindOfClass:[PullingRefreshTableView class]]){
-        
     }
 }
 
 ///拖拽后调用的方法
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-//    [self modifyTopScrollViewPositiong:scrollView];
+
     
-    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
+//    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
     
-    [listTableView tableViewDidEndDragging:scrollView];
+//    [listTableView tableViewDidEndDragging:scrollView];
 }
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
@@ -235,7 +287,7 @@
     if ([scrollView isEqual:_scrollView]) {
         
         NSInteger oldPage=_currentPage;
-        for (PullingRefreshTableView *listTableView in _scrollTableViews) {
+        for (UITableView *listTableView in _scrollTableViews) {
             if (CGRectContainsPoint(listTableView.frame,_scrollView.contentOffset)) {
                 _currentPage=listTableView.tag;
                 break;
@@ -271,8 +323,8 @@
         _slideView.frame = frame;
     }
     
-    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
-    [listTableView tableViewDidScroll:scrollView];
+//    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
+//    [listTableView tableViewDidScroll:scrollView];
 }
 
 
@@ -335,29 +387,29 @@ BOOL nibsRegistered=NO;
     }
 }
 
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
-   self.refreshing = YES;
-    pageNumber++;
-    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1.f];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate{
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *currentDateStr = [df stringFromDate:[NSDate date]];
-    NSDate *date = [df dateFromString:currentDateStr];
-    return date;
-}
-
-
-
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
-    pageNumber++;
-    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1.f];
-    
-}
+//#pragma mark - PullingRefreshTableViewDelegate
+//- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+//   self.refreshing = YES;
+//    pageNumber++;
+//    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1.f];
+//}
+//
+//- (NSDate *)pullingTableViewRefreshingFinishedDate{
+//    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//    df.dateFormat = @"yyyy-MM-dd HH:mm";
+//    NSString *currentDateStr = [df stringFromDate:[NSDate date]];
+//    NSDate *date = [df dateFromString:currentDateStr];
+//    return date;
+//}
+//
+//
+//
+//
+//- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
+//    pageNumber++;
+//    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1.f];
+//    
+//}
 
 - (void)reloadData{
     
@@ -369,11 +421,17 @@ BOOL nibsRegistered=NO;
 
 - (void)getDataOver {
     
-    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
+//    PullingRefreshTableView *listTableView=_scrollTableViews[_currentPage];
+//    
+//    
+//    [listTableView reloadData];
+//    [listTableView tableViewDidFinishedLoading];
+//    listTableView.reachedTheEnd = NO;
     
+    UITableView *listTableView=_scrollTableViews[_currentPage];
+    
+    [listTableView.mj_header endRefreshing];
     [listTableView reloadData];
-    [listTableView tableViewDidFinishedLoading];
-    listTableView.reachedTheEnd = NO;
     
 }
 

@@ -39,7 +39,6 @@
     [_webView loadRequest:req];
     return;
     
-    
     NSHTTPCookieStorage *myCookie = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in [myCookie cookies]) {
 //        NSLog(@"%@", cookie);
@@ -168,7 +167,7 @@
     [self scalingChange:webView];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
     NSLog(@"error:%@",error);
 }
 

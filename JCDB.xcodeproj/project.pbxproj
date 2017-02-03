@@ -30,6 +30,7 @@
 		1807D3241D3936EE00D6A60C /* button-seelect.png in Resources */ = {isa = PBXBuildFile; fileRef = 1807D3221D3936EE00D6A60C /* button-seelect.png */; };
 		1807D3251D3936EE00D6A60C /* button-seelect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1807D3231D3936EE00D6A60C /* button-seelect@2x.png */; };
 		180CDEEA1D410678001F16DF /* DocumentReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 180CDEE91D410678001F16DF /* DocumentReplyViewController.m */; };
+		183B1E031D61705D0060D637 /* MyTransformAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 183B1E001D61705D0060D637 /* MyTransformAnimation.m */; };
 		183FB4BC1CB61A1A00AF15F1 /* WorkReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 183FB4BB1CB61A1A00AF15F1 /* WorkReportViewController.m */; };
 		183FB4C01CB62B3B00AF15F1 /* pd_bj.png in Resources */ = {isa = PBXBuildFile; fileRef = 183FB4BD1CB62B3B00AF15F1 /* pd_bj.png */; };
 		183FB4C11CB62B3B00AF15F1 /* pd_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 183FB4BE1CB62B3B00AF15F1 /* pd_right.png */; };
@@ -100,7 +101,6 @@
 		18AB59521CC9AC1E00D85993 /* MyQLPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AB59511CC9AC1E00D85993 /* MyQLPreviewController.m */; };
 		18AB59621CC9F91300D85993 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AB59611CC9F91300D85993 /* close.png */; };
 		18AB5A7D1CD2462B00D85993 /* UploadImageFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AB5A7C1CD2462B00D85993 /* UploadImageFileViewController.m */; };
-		18EA2CB21C5CEEF5002C21F6 /* EndMatterListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CB11C5CEEF5002C21F6 /* EndMatterListViewController.m */; };
 		18EA2CC71C5E1642002C21F6 /* WHUCalendarCal.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CB91C5E1642002C21F6 /* WHUCalendarCal.m */; };
 		18EA2CC81C5E1642002C21F6 /* WHUCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CBB1C5E1642002C21F6 /* WHUCalendarCell.m */; };
 		18EA2CC91C5E1642002C21F6 /* WHUCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CBD1C5E1642002C21F6 /* WHUCalendarFlowLayout.m */; };
@@ -110,7 +110,11 @@
 		18EA2CCD1C5E1642002C21F6 /* WHUCalendarYMSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CC61C5E1642002C21F6 /* WHUCalendarYMSelectView.m */; };
 		18EA2CD01C5E16CC002C21F6 /* ScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EA2CCF1C5E16CC002C21F6 /* ScheduleInfoViewController.m */; };
 		18F9D9BB1D34DD4F005D404C /* AttendanceHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9D9BA1D34DD4F005D404C /* AttendanceHistoryViewController.m */; };
-		359331A9F847D19DEEDD1B8C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D851FC302458EB9DD0E866AB /* libPods.a */; };
+		3F8455361D9CD02500B79C03 /* EndMatterPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8455351D9CD02500B79C03 /* EndMatterPageViewController.m */; };
+		3F84553C1D9CE55E00B79C03 /* EndMatterNewListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F84553B1D9CE55E00B79C03 /* EndMatterNewListViewController.m */; };
+		3F8455431D9CF21C00B79C03 /* WorkOrderPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8455421D9CF21C00B79C03 /* WorkOrderPageViewController.m */; };
+		3F8455461D9CF35500B79C03 /* WorkOrderNewListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8455451D9CF35500B79C03 /* WorkOrderNewListViewController.m */; };
+		3FFFE7451E0B7907006D8450 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FFFE7441E0B7907006D8450 /* CoreGraphics.framework */; };
 		9621CA961C5C9A400004BD4B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CA951C5C9A400004BD4B /* main.m */; };
 		9621CA991C5C9A400004BD4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CA981C5C9A400004BD4B /* AppDelegate.m */; };
 		9621CA9F1C5C9A400004BD4B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9621CA9D1C5C9A400004BD4B /* Main.storyboard */; };
@@ -226,7 +230,6 @@
 		9621CC111C5C9FD40004BD4B /* UIView+BindValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC001C5C9FD40004BD4B /* UIView+BindValues.m */; };
 		9621CC121C5C9FD40004BD4B /* UIFolderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC021C5C9FD40004BD4B /* UIFolderTableView.m */; };
 		9621CC131C5C9FD40004BD4B /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC041C5C9FD40004BD4B /* MJPopupBackgroundView.m */; };
-		9621CC141C5C9FD40004BD4B /* LeaveSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC061C5C9FD40004BD4B /* LeaveSlideView.m */; };
 		9621CC151C5C9FD40004BD4B /* HireListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC081C5C9FD40004BD4B /* HireListCell.m */; };
 		9621CC161C5C9FD40004BD4B /* FolderCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC0A1C5C9FD40004BD4B /* FolderCoverView.m */; };
 		9621CC181C5C9FD40004BD4B /* DDList.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC0E1C5C9FD40004BD4B /* DDList.m */; };
@@ -246,7 +249,6 @@
 		9621CC471C5C9FFE0004BD4B /* WorkOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC341C5C9FFE0004BD4B /* WorkOrderCell.m */; };
 		9621CC481C5C9FFE0004BD4B /* WorkOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9621CC351C5C9FFE0004BD4B /* WorkOrderCell.xib */; };
 		9621CC491C5C9FFE0004BD4B /* WorkOrderDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC371C5C9FFE0004BD4B /* WorkOrderDetailsViewController.m */; };
-		9621CC4A1C5C9FFE0004BD4B /* WorkOrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC391C5C9FFE0004BD4B /* WorkOrderListViewController.m */; };
 		9621CC531C5CA0130004BD4B /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC4D1C5CA0130004BD4B /* AboutViewController.m */; };
 		9621CC541C5CA0130004BD4B /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9621CC4E1C5CA0130004BD4B /* AboutViewController.xib */; };
 		9621CC551C5CA0130004BD4B /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9621CC501C5CA0130004BD4B /* ChangePasswordViewController.m */; };
@@ -257,6 +259,7 @@
 		9621CC5E1C5CA24A0004BD4B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9621CC5D1C5CA24A0004BD4B /* CFNetwork.framework */; };
 		9621CC601C5CA2580004BD4B /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9621CC5F1C5CA2580004BD4B /* libz.1.2.5.dylib */; };
 		9621CC631C5CA29F0004BD4B /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9621CC611C5CA27A0004BD4B /* libxml2.2.dylib */; };
+		DB4F85C723E4E5B2E384FC48 /* libPods-JCDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AF6D6FF204E3FB60AC340E /* libPods-JCDB.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -305,6 +308,8 @@
 		1807D3231D3936EE00D6A60C /* button-seelect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-seelect@2x.png"; path = "img/button-seelect@2x.png"; sourceTree = "<group>"; };
 		180CDEE81D410678001F16DF /* DocumentReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentReplyViewController.h; path = "View Controllers/DocumentReplyViewController.h"; sourceTree = "<group>"; };
 		180CDEE91D410678001F16DF /* DocumentReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DocumentReplyViewController.m; path = "View Controllers/DocumentReplyViewController.m"; sourceTree = "<group>"; };
+		183B1DFF1D61705D0060D637 /* MyTransformAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyTransformAnimation.h; path = NavigationController/MyTransformAnimation.h; sourceTree = "<group>"; };
+		183B1E001D61705D0060D637 /* MyTransformAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyTransformAnimation.m; path = NavigationController/MyTransformAnimation.m; sourceTree = "<group>"; };
 		183FB4BA1CB61A1A00AF15F1 /* WorkReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkReportViewController.h; path = "View Controllers/WorkReportViewController.h"; sourceTree = "<group>"; };
 		183FB4BB1CB61A1A00AF15F1 /* WorkReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkReportViewController.m; path = "View Controllers/WorkReportViewController.m"; sourceTree = "<group>"; };
 		183FB4BD1CB62B3B00AF15F1 /* pd_bj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pd_bj.png; path = img/pd_bj.png; sourceTree = "<group>"; };
@@ -402,8 +407,6 @@
 		18AB59611CC9F91300D85993 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = close.png; path = img/close.png; sourceTree = "<group>"; };
 		18AB5A7B1CD2462B00D85993 /* UploadImageFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadImageFileViewController.h; path = "View Controllers/UploadImageFileViewController.h"; sourceTree = "<group>"; };
 		18AB5A7C1CD2462B00D85993 /* UploadImageFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadImageFileViewController.m; path = "View Controllers/UploadImageFileViewController.m"; sourceTree = "<group>"; };
-		18EA2CB01C5CEEF5002C21F6 /* EndMatterListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EndMatterListViewController.h; path = "View Controllers/EndMatterListViewController.h"; sourceTree = "<group>"; };
-		18EA2CB11C5CEEF5002C21F6 /* EndMatterListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EndMatterListViewController.m; path = "View Controllers/EndMatterListViewController.m"; sourceTree = "<group>"; };
 		18EA2CB81C5E1642002C21F6 /* WHUCalendarCal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHUCalendarCal.h; path = WHUCalendarView/WHUCalendarCal.h; sourceTree = "<group>"; };
 		18EA2CB91C5E1642002C21F6 /* WHUCalendarCal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WHUCalendarCal.m; path = WHUCalendarView/WHUCalendarCal.m; sourceTree = "<group>"; };
 		18EA2CBA1C5E1642002C21F6 /* WHUCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WHUCalendarCell.h; path = WHUCalendarView/WHUCalendarCell.h; sourceTree = "<group>"; };
@@ -423,8 +426,16 @@
 		18EA2CCF1C5E16CC002C21F6 /* ScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScheduleInfoViewController.m; path = "View Controllers/ScheduleInfoViewController.m"; sourceTree = "<group>"; };
 		18F9D9B91D34DD4F005D404C /* AttendanceHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AttendanceHistoryViewController.h; path = "View Controllers/AttendanceHistoryViewController.h"; sourceTree = "<group>"; };
 		18F9D9BA1D34DD4F005D404C /* AttendanceHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AttendanceHistoryViewController.m; path = "View Controllers/AttendanceHistoryViewController.m"; sourceTree = "<group>"; };
-		33F1778958B10CF3EBC43C73 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		7DC364380375B44806CFFE47 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		2FDE72E8FC0292F830350C52 /* Pods-JCDB.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JCDB.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JCDB/Pods-JCDB.debug.xcconfig"; sourceTree = "<group>"; };
+		3F8455341D9CD02500B79C03 /* EndMatterPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EndMatterPageViewController.h; path = "View Controllers/EndMatterPageViewController.h"; sourceTree = "<group>"; };
+		3F8455351D9CD02500B79C03 /* EndMatterPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EndMatterPageViewController.m; path = "View Controllers/EndMatterPageViewController.m"; sourceTree = "<group>"; };
+		3F84553A1D9CE55E00B79C03 /* EndMatterNewListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EndMatterNewListViewController.h; path = "View Controllers/EndMatterNewListViewController.h"; sourceTree = "<group>"; };
+		3F84553B1D9CE55E00B79C03 /* EndMatterNewListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EndMatterNewListViewController.m; path = "View Controllers/EndMatterNewListViewController.m"; sourceTree = "<group>"; };
+		3F8455411D9CF21C00B79C03 /* WorkOrderPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkOrderPageViewController.h; path = "View Controllers/WorkOrderPageViewController.h"; sourceTree = "<group>"; };
+		3F8455421D9CF21C00B79C03 /* WorkOrderPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderPageViewController.m; path = "View Controllers/WorkOrderPageViewController.m"; sourceTree = "<group>"; };
+		3F8455441D9CF35500B79C03 /* WorkOrderNewListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkOrderNewListViewController.h; path = "View Controllers/WorkOrderNewListViewController.h"; sourceTree = "<group>"; };
+		3F8455451D9CF35500B79C03 /* WorkOrderNewListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderNewListViewController.m; path = "View Controllers/WorkOrderNewListViewController.m"; sourceTree = "<group>"; };
+		3FFFE7441E0B7907006D8450 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9621CA901C5C9A400004BD4B /* JCDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JCDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9621CA941C5C9A400004BD4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9621CA951C5C9A400004BD4B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -634,8 +645,6 @@
 		9621CC031C5C9FD40004BD4B /* UIFolderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIFolderTableView.h; path = View/UIFolderTableView.h; sourceTree = "<group>"; };
 		9621CC041C5C9FD40004BD4B /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MJPopupBackgroundView.m; path = View/MJPopupBackgroundView.m; sourceTree = "<group>"; };
 		9621CC051C5C9FD40004BD4B /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MJPopupBackgroundView.h; path = View/MJPopupBackgroundView.h; sourceTree = "<group>"; };
-		9621CC061C5C9FD40004BD4B /* LeaveSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LeaveSlideView.m; path = View/LeaveSlideView.m; sourceTree = "<group>"; };
-		9621CC071C5C9FD40004BD4B /* LeaveSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeaveSlideView.h; path = View/LeaveSlideView.h; sourceTree = "<group>"; };
 		9621CC081C5C9FD40004BD4B /* HireListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HireListCell.m; path = View/HireListCell.m; sourceTree = "<group>"; };
 		9621CC091C5C9FD40004BD4B /* HireListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HireListCell.h; path = View/HireListCell.h; sourceTree = "<group>"; };
 		9621CC0A1C5C9FD40004BD4B /* FolderCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FolderCoverView.m; path = View/FolderCoverView.m; sourceTree = "<group>"; };
@@ -672,8 +681,6 @@
 		9621CC351C5C9FFE0004BD4B /* WorkOrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WorkOrderCell.xib; path = "View Controllers/WorkOrderCell.xib"; sourceTree = "<group>"; };
 		9621CC361C5C9FFE0004BD4B /* WorkOrderDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkOrderDetailsViewController.h; path = "View Controllers/WorkOrderDetailsViewController.h"; sourceTree = "<group>"; };
 		9621CC371C5C9FFE0004BD4B /* WorkOrderDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderDetailsViewController.m; path = "View Controllers/WorkOrderDetailsViewController.m"; sourceTree = "<group>"; };
-		9621CC381C5C9FFE0004BD4B /* WorkOrderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkOrderListViewController.h; path = "View Controllers/WorkOrderListViewController.h"; sourceTree = "<group>"; };
-		9621CC391C5C9FFE0004BD4B /* WorkOrderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderListViewController.m; path = "View Controllers/WorkOrderListViewController.m"; sourceTree = "<group>"; };
 		9621CC4C1C5CA0130004BD4B /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = "View Controllers/about/AboutViewController.h"; sourceTree = "<group>"; };
 		9621CC4D1C5CA0130004BD4B /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = "View Controllers/about/AboutViewController.m"; sourceTree = "<group>"; };
 		9621CC4E1C5CA0130004BD4B /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = "View Controllers/about/AboutViewController.xib"; sourceTree = "<group>"; };
@@ -687,7 +694,8 @@
 		9621CC5D1C5CA24A0004BD4B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		9621CC5F1C5CA2580004BD4B /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		9621CC611C5CA27A0004BD4B /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		D851FC302458EB9DD0E866AB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1AF6D6FF204E3FB60AC340E /* libPods-JCDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JCDB.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB43EFC284A0D708E0759FEF /* Pods-JCDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JCDB.release.xcconfig"; path = "Pods/Target Support Files/Pods-JCDB/Pods-JCDB.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -695,6 +703,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFFE7451E0B7907006D8450 /* CoreGraphics.framework in Frameworks */,
 				18AA4F7B1D52E628007C8490 /* CoreMotion.framework in Frameworks */,
 				18AA4F791D52E61B007C8490 /* OpenGLES.framework in Frameworks */,
 				18AA4F771D52E600007C8490 /* AudioToolbox.framework in Frameworks */,
@@ -708,7 +717,7 @@
 				9621CC5C1C5CA2400004BD4B /* MobileCoreServices.framework in Frameworks */,
 				9621CC5A1C5CA2340004BD4B /* SystemConfiguration.framework in Frameworks */,
 				9621CC581C5CA2270004BD4B /* QuickLook.framework in Frameworks */,
-				359331A9F847D19DEEDD1B8C /* libPods.a in Frameworks */,
+				DB4F85C723E4E5B2E384FC48 /* libPods-JCDB.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +773,15 @@
 				180143861D25687C00B79669 /* YALContextMenuTableView.m */,
 			);
 			name = YALContextMenu;
+			sourceTree = "<group>";
+		};
+		183B1DEC1D615F0F0060D637 /* NavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				183B1DFF1D61705D0060D637 /* MyTransformAnimation.h */,
+				183B1E001D61705D0060D637 /* MyTransformAnimation.m */,
+			);
+			name = NavigationController;
 			sourceTree = "<group>";
 		};
 		183FB4CB1CB6BFEE00AF15F1 /* SJAvatarBrowser */ = {
@@ -839,23 +857,14 @@
 			name = WHUCalendarView;
 			sourceTree = "<group>";
 		};
-		4E18BAA037A11FE8685161B1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7DC364380375B44806CFFE47 /* Pods.debug.xcconfig */,
-				33F1778958B10CF3EBC43C73 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		9621CA871C5C9A400004BD4B = {
 			isa = PBXGroup;
 			children = (
 				9621CA921C5C9A400004BD4B /* JCDB */,
 				9621CAAC1C5C9A400004BD4B /* JCDBTests */,
 				9621CA911C5C9A400004BD4B /* Products */,
-				4E18BAA037A11FE8685161B1 /* Pods */,
 				CB8F6A05F6833F03C75501A4 /* Frameworks */,
+				E5CFD2C4D5D1CB09EEE3413C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -871,6 +880,7 @@
 		9621CA921C5C9A400004BD4B /* JCDB */ = {
 			isa = PBXGroup;
 			children = (
+				183B1DEC1D615F0F0060D637 /* NavigationController */,
 				187868D31CABCE26003E6EBC /* TOWebViewController */,
 				9621CC191C5C9FEC0004BD4B /* View Controllers */,
 				9621CBE91C5C9F8F0004BD4B /* view */,
@@ -1295,8 +1305,6 @@
 				9621CC031C5C9FD40004BD4B /* UIFolderTableView.h */,
 				9621CC041C5C9FD40004BD4B /* MJPopupBackgroundView.m */,
 				9621CC051C5C9FD40004BD4B /* MJPopupBackgroundView.h */,
-				9621CC061C5C9FD40004BD4B /* LeaveSlideView.m */,
-				9621CC071C5C9FD40004BD4B /* LeaveSlideView.h */,
 				9621CC081C5C9FD40004BD4B /* HireListCell.m */,
 				9621CC091C5C9FD40004BD4B /* HireListCell.h */,
 				9621CC0A1C5C9FD40004BD4B /* FolderCoverView.m */,
@@ -1378,10 +1386,14 @@
 				9621CC371C5C9FFE0004BD4B /* WorkOrderDetailsViewController.m */,
 				183FB4BA1CB61A1A00AF15F1 /* WorkReportViewController.h */,
 				183FB4BB1CB61A1A00AF15F1 /* WorkReportViewController.m */,
-				9621CC381C5C9FFE0004BD4B /* WorkOrderListViewController.h */,
-				9621CC391C5C9FFE0004BD4B /* WorkOrderListViewController.m */,
-				18EA2CB01C5CEEF5002C21F6 /* EndMatterListViewController.h */,
-				18EA2CB11C5CEEF5002C21F6 /* EndMatterListViewController.m */,
+				3F8455341D9CD02500B79C03 /* EndMatterPageViewController.h */,
+				3F8455351D9CD02500B79C03 /* EndMatterPageViewController.m */,
+				3F84553A1D9CE55E00B79C03 /* EndMatterNewListViewController.h */,
+				3F84553B1D9CE55E00B79C03 /* EndMatterNewListViewController.m */,
+				3F8455411D9CF21C00B79C03 /* WorkOrderPageViewController.h */,
+				3F8455421D9CF21C00B79C03 /* WorkOrderPageViewController.m */,
+				3F8455441D9CF35500B79C03 /* WorkOrderNewListViewController.h */,
+				3F8455451D9CF35500B79C03 /* WorkOrderNewListViewController.m */,
 				18EA2CCE1C5E16CC002C21F6 /* ScheduleInfoViewController.h */,
 				18EA2CCF1C5E16CC002C21F6 /* ScheduleInfoViewController.m */,
 				184185151D475E8600C02D23 /* ScheduleQueryViewController.h */,
@@ -1440,6 +1452,7 @@
 		CB8F6A05F6833F03C75501A4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3FFFE7441E0B7907006D8450 /* CoreGraphics.framework */,
 				1801434E1D22DB7800B79669 /* CoreLocation.framework */,
 				1801434C1D22DB5400B79669 /* MapKit.framework */,
 				9621CC611C5CA27A0004BD4B /* libxml2.2.dylib */,
@@ -1453,9 +1466,18 @@
 				18AA4F761D52E600007C8490 /* AudioToolbox.framework */,
 				18AA4F741D52E5E9007C8490 /* AVFoundation.framework */,
 				18AA4F721D52E5CE007C8490 /* CoreTelephony.framework */,
-				D851FC302458EB9DD0E866AB /* libPods.a */,
+				D1AF6D6FF204E3FB60AC340E /* libPods-JCDB.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E5CFD2C4D5D1CB09EEE3413C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2FDE72E8FC0292F830350C52 /* Pods-JCDB.debug.xcconfig */,
+				EB43EFC284A0D708E0759FEF /* Pods-JCDB.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1465,12 +1487,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9621CAB31C5C9A400004BD4B /* Build configuration list for PBXNativeTarget "JCDB" */;
 			buildPhases = (
-				C997F9E1FDC6F3866BAE028F /* Check Pods Manifest.lock */,
+				F3844DE7298DBB10FC936629 /* [CP] Check Pods Manifest.lock */,
 				9621CA8C1C5C9A400004BD4B /* Sources */,
 				9621CA8D1C5C9A400004BD4B /* Frameworks */,
 				9621CA8E1C5C9A400004BD4B /* Resources */,
-				9C5E78403F1EF1F4B32F1692 /* Embed Pods Frameworks */,
-				CA3EB3C7CFCDFC457D97B02A /* Copy Pods Resources */,
+				6C262FCD8DA3BE0EA40CB46A /* [CP] Embed Pods Frameworks */,
+				DC77A9F9B072A78AFABD3B2F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1505,12 +1527,13 @@
 		9621CA881C5C9A400004BD4B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = wjc;
 				TargetAttributes = {
 					9621CA8F1C5C9A400004BD4B = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = KH68DXQFBN;
+						DevelopmentTeam = DHA3S45AE5;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1519,6 +1542,7 @@
 					};
 					9621CAA81C5C9A400004BD4B = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 2P93Y36D6V;
 						TestTargetID = 9621CA8F1C5C9A400004BD4B;
 					};
 				};
@@ -1644,49 +1668,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9C5E78403F1EF1F4B32F1692 /* Embed Pods Frameworks */ = {
+		6C262FCD8DA3BE0EA40CB46A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JCDB/Pods-JCDB-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C997F9E1FDC6F3866BAE028F /* Check Pods Manifest.lock */ = {
+		DC77A9F9B072A78AFABD3B2F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JCDB/Pods-JCDB-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CA3EB3C7CFCDFC457D97B02A /* Copy Pods Resources */ = {
+		F3844DE7298DBB10FC936629 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1714,7 +1738,6 @@
 				18F9D9BB1D34DD4F005D404C /* AttendanceHistoryViewController.m in Sources */,
 				9621CC3D1C5C9FFE0004BD4B /* HeadViewController.m in Sources */,
 				180143881D25687C00B79669 /* YALContextMenuTableView.m in Sources */,
-				9621CC141C5C9FD40004BD4B /* LeaveSlideView.m in Sources */,
 				9621CB111C5C9D2D0004BD4B /* NSString+URL.mm in Sources */,
 				187868DE1CABCE67003E6EBC /* TOWebViewController.m in Sources */,
 				18EA2CC71C5E1642002C21F6 /* WHUCalendarCal.m in Sources */,
@@ -1730,6 +1753,7 @@
 				18AB59521CC9AC1E00D85993 /* MyQLPreviewController.m in Sources */,
 				18EA2CD01C5E16CC002C21F6 /* ScheduleInfoViewController.m in Sources */,
 				9621CB161C5C9D2D0004BD4B /* UIViewController+MJPopupViewController.m in Sources */,
+				3F8455431D9CF21C00B79C03 /* WorkOrderPageViewController.m in Sources */,
 				180143971D2588D400B79669 /* ProcessStatusHeadView.m in Sources */,
 				9621CB921C5C9E3C0004BD4B /* MJPhotoView.m in Sources */,
 				9621CBC91C5C9EC80004BD4B /* SDWebImageDownloaderOperation.m in Sources */,
@@ -1738,8 +1762,10 @@
 				9621CBD71C5C9EF20004BD4B /* SIAlertView.m in Sources */,
 				9621CBCB1C5C9EC80004BD4B /* SDWebImagePrefetcher.m in Sources */,
 				9621CB621C5C9DBC0004BD4B /* IQTitleBarButtonItem.m in Sources */,
+				3F8455361D9CD02500B79C03 /* EndMatterPageViewController.m in Sources */,
 				18EA2CC81C5E1642002C21F6 /* WHUCalendarCell.m in Sources */,
 				9621CAD51C5C9B0D0004BD4B /* ASIHTTPRequest.m in Sources */,
+				3F8455461D9CF35500B79C03 /* WorkOrderNewListViewController.m in Sources */,
 				9621CC461C5C9FFE0004BD4B /* StaffContactsViewController.m in Sources */,
 				9621CB741C5C9E020004BD4B /* MBProgressHUD.m in Sources */,
 				1801434B1D22D61D00B79669 /* CLLocation+YCLocation.m in Sources */,
@@ -1749,6 +1775,7 @@
 				9621CAF11C5C9CCF0004BD4B /* NSString+Base64.m in Sources */,
 				1801439F1D258FEC00B79669 /* ProcessStatusCell.m in Sources */,
 				9621CBE31C5C9F430004BD4B /* SSCheckBoxView.m in Sources */,
+				3F84553C1D9CE55E00B79C03 /* EndMatterNewListViewController.m in Sources */,
 				18EA2CC91C5E1642002C21F6 /* WHUCalendarFlowLayout.m in Sources */,
 				9621CA991C5C9A400004BD4B /* AppDelegate.m in Sources */,
 				187868DF1CABCE67003E6EBC /* UIImage+TOWebViewControllerIcons.m in Sources */,
@@ -1760,7 +1787,6 @@
 				9621CB641C5C9DBC0004BD4B /* IQUIView+Hierarchy.m in Sources */,
 				9621CB8F1C5C9E3C0004BD4B /* MJPhotoLoadingView.m in Sources */,
 				9621CBA41C5C9E800004BD4B /* MRMessageInterceptor.m in Sources */,
-				18EA2CB21C5CEEF5002C21F6 /* EndMatterListViewController.m in Sources */,
 				9621CC3E1C5C9FFE0004BD4B /* KSJXTabBarController.m in Sources */,
 				9621CAD71C5C9B0D0004BD4B /* ASINetworkQueue.m in Sources */,
 				9621CAE41C5C9C340004BD4B /* BATableViewIndex.m in Sources */,
@@ -1771,7 +1797,6 @@
 				9621CAD31C5C9B0D0004BD4B /* ASIDownloadCache.m in Sources */,
 				18A946BF1D03A4D400B22D32 /* DeviceViewController.m in Sources */,
 				9621CB031C5C9D1F0004BD4B /* NSDate+Helper.m in Sources */,
-				9621CC4A1C5C9FFE0004BD4B /* WorkOrderListViewController.m in Sources */,
 				9621CBF01C5C9FA60004BD4B /* CAAnimation+WAnimation.m in Sources */,
 				9621CBFD1C5C9FC00004BD4B /* PullingRefreshTableView.m in Sources */,
 				1801438B1D25699900B79669 /* YALNavigationBar.m in Sources */,
@@ -1836,6 +1861,7 @@
 				9621CB901C5C9E3C0004BD4B /* MJPhotoProgressView.m in Sources */,
 				9621CB8E1C5C9E3C0004BD4B /* MJPhotoBrowser.m in Sources */,
 				184185141D46365800C02D23 /* DBListViewController.m in Sources */,
+				183B1E031D61705D0060D637 /* MyTransformAnimation.m in Sources */,
 				9621CBCA1C5C9EC80004BD4B /* SDWebImageManager.m in Sources */,
 				9621CB9E1C5C9E580004BD4B /* WorkOrderBean.m in Sources */,
 				9621CAE31C5C9C340004BD4B /* BATableView.m in Sources */,
@@ -1893,13 +1919,16 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2P93Y36D6V;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1938,13 +1967,16 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2P93Y36D6V;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1965,45 +1997,49 @@
 		};
 		9621CAB41C5C9A400004BD4B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DC364380375B44806CFFE47 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 2FDE72E8FC0292F830350C52 /* Pods-JCDB.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = DHA3S45AE5;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = JCDB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shenlan.pa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ecp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		9621CAB51C5C9A400004BD4B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33F1778958B10CF3EBC43C73 /* Pods.release.xcconfig */;
+			baseConfigurationReference = EB43EFC284A0D708E0759FEF /* Pods-JCDB.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 758564012@qq.com (9LWY6ST4Y6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: dazhuliwei@163.com (P2MXP39842)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = DHA3S45AE5;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = JCDB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.shenlan.pa;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.ecp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

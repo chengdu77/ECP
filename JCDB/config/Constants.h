@@ -11,9 +11,6 @@
 
 #import "UIColor+External.h"
 
-#define kUploadFileUrl @"http://192.168.1.101/ksjx/upload.php"
-
-
 #undef	RGB
 #define RGB(R,G,B)		[UIColor colorWithRed:R/255.0f green:G/255.0f blue:B/255.0f alpha:1.0f]
 
@@ -95,7 +92,10 @@
 //签到
 #define kURL_signed @"%@/ext/com.cinsea.action.ProcessAction?action=signed&didian=%@&jingweidu=%@"
 //消息
-#define kURL_NotifyAction @"%@/ext/com.cinsea.action.NotifyAction?action=getNotify"
+#define kURL_NotifyAction @"%@/ext/com.cinsea.action.NotifyAction?action=getNotify&pageIndex=%@"
+
+//搜索
+#define kURL_FoundAction @"%@/ext/com.cinsea.action.SearchAction?q=%@&page=%@"
 
 typedef void (^PopViewController)();
 typedef void (^PopViewBlock)(id object);

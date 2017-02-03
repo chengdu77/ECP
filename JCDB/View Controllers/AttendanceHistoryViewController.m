@@ -40,9 +40,9 @@
     NSArray *buttonArray = [[NSArray alloc]initWithObjects:commitButton,nil];
     self.navigationItem.rightBarButtonItems = buttonArray;
     
-    NSString *dates = [self getMonthBeginAndEndWith:[NSDate date]];
-    NSArray *dateArray = [dates componentsSeparatedByString:@","];
-    [self requestData:dateArray[0] endDate:dateArray[1]];
+//    NSString *dates = [self getMonthBeginAndEndWith:[NSDate date]];
+//    NSArray *dateArray = [dates componentsSeparatedByString:@","];
+    [self requestData:@"" endDate:@""];
 
 }
 
@@ -86,8 +86,8 @@
 - (void)requestData:(NSString *)startDate endDate:(NSString *)endDate{
     
     #if defined(DEBUG)||defined(_DEBUG)
-    startDate = @"2015-06-17";
-    endDate = @"2015-06-26";
+//    startDate = @"2015-06-17";
+//    endDate = @"2015-06-26";
 #endif
     
     NSString *serviceIPInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
@@ -96,7 +96,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;
@@ -274,19 +274,19 @@
     
     UIDatePicker *picer = [[UIDatePicker alloc] init];
     picer.datePickerMode = UIDatePickerModeDate;
-    if (IOS8_OR_LATER) {
-        picer.frame = CGRectMake(-20, 40, 320, 200);
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择\n\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            NSDate *date = picer.date;
-            UILabel *timeLabel = (UILabel *)sender.view;
-            timeLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
-        }];
-        [alertController.view addSubview:picer];
-        [alertController addAction:cancleAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }
+
+    picer.frame = CGRectMake(-20, 40, 320, 200);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请选择\n\n\n\n\n\n\n\n\n\n\n\n" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSDate *date = picer.date;
+        UILabel *timeLabel = (UILabel *)sender.view;
+        timeLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
+    }];
+    [alertController.view addSubview:picer];
+    [alertController addAction:cancleAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
 }
 
 - (UIButton *)buttonForTitle:(NSString *)title action:(SEL)action{

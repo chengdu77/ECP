@@ -57,7 +57,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     NSArray *phone=@[@"照片:"];
-    optionArray=@[@"姓名：",@"性别：",@"电话号码：",@"部门：",@"职责：",@"邮箱："];
+    optionArray=@[@"姓名：",@"性别：",@"电话号码：",@"部门：",@"邮箱："];
     
     optionArray=@[phone,optionArray];
     

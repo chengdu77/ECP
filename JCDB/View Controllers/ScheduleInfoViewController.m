@@ -66,7 +66,7 @@ static NSString *LeaveTableIdentifier = @"WorkOrderCell";
     calendarView.layer.shadowOpacity=0.5;
     calendarView.layer.shadowRadius=1;
    
-    __block ScheduleInfoViewController *this=self;
+    __weak ScheduleInfoViewController *this=self;
     calendarView.onDateSelectBlk=^(NSDate* date){
         
         NSString *selectedDate = [this dateToString:date format:@"yyyy-MM-dd"];
@@ -158,7 +158,7 @@ static NSString *LeaveTableIdentifier = @"WorkOrderCell";
     
     [self setCookie:url];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;

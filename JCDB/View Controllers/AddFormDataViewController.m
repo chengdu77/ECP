@@ -104,7 +104,7 @@
     for (NSDictionary *info in infoBean.formfields) {
         MyFormFieldsBean *bean = [MyFormFieldsBean new];
        
-        bean.defaultvalue = info[@"defaultvalue"];
+        bean.defaultvalue = info[@"id"];//info[@"defaultvalue"];
 //        NSLog(@"info allkey:%@",info.allKeys);
 //        NSLog(@"displayvalue:%@ displayvalue:%@",info[@"displayvalue"],[info objectForKey:@"displayvalue"]);
         bean.displayvalue = info[@"displayvalue"];//显示默认值
@@ -330,7 +330,7 @@
             }
             textField.text = bean.displayvalue;
             
-            textField.layer.borderColor = kALLBUTTON_COLOR.CGColor;
+            textField.layer.borderColor = self.canEditFlag?kALLBUTTON_COLOR.CGColor:kBackgroundColor.CGColor;
             textField.layer.borderWidth = .5;
             textField.layer.cornerRadius = 6;
             [textField.layer setMasksToBounds:YES];
@@ -383,8 +383,7 @@
             
             if ([fieldType isEqualToString:kSingleListField] || [fieldType isEqualToString:kMoreListField] ||[fieldType isEqualToString:kDateField]  ||[fieldType isEqualToString:kTimeField] || [fieldType isEqualToString:kSelectListField]) {
                 
-//                bLabel.backgroundColor = RGB(230, 233, 238);
-                bLabel.layer.borderColor = kBackgroundColor.CGColor;
+                bLabel.layer.borderColor = self.canEditFlag?kALLBUTTON_COLOR.CGColor:kBackgroundColor.CGColor;
                 bLabel.layer.borderWidth = .5;
                 bLabel.layer.cornerRadius = 6;
                 [bLabel.layer setMasksToBounds:YES];
@@ -668,7 +667,7 @@
     NSURL *url = [NSURL URLWithString:serviceStr];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
@@ -740,26 +739,25 @@
         title = @"请选择时间：时分\n\n\n\n\n\n\n\n\n\n\n\n";
     }
     
-    if (IOS8_OR_LATER) {
-        picer.frame = CGRectMake(-20, 40, self.viewWidth, 200);
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        __block UILabel *tempLabel = label;
-        UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-            NSDate *date = picer.date;
-            if ([tempLabel.fieldType isEqualToString:kDateField]) {
-                tempLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
-                tempLabel.value = [date stringWithFormat:@"yyyy-MM-dd"];
-            }else{
-                tempLabel.text = [date stringWithFormat:@"HH:mm"];
-                tempLabel.value = [date stringWithFormat:@"HH:mm"];
-            }
-        }];
-        [alertController.view addSubview:picer];
-        [alertController addAction:cancleAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }
+    picer.frame = CGRectMake(-20, 40, self.viewWidth, 200);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    __weak UILabel *tempLabel = label;
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSDate *date = picer.date;
+        if ([tempLabel.fieldType isEqualToString:kDateField]) {
+            tempLabel.text = [date stringWithFormat:@"yyyy-MM-dd"];
+            tempLabel.value = [date stringWithFormat:@"yyyy-MM-dd"];
+        }else{
+            tempLabel.text = [date stringWithFormat:@"HH:mm"];
+            tempLabel.value = [date stringWithFormat:@"HH:mm"];
+        }
+    }];
+    [alertController.view addSubview:picer];
+    [alertController addAction:cancleAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -973,6 +971,8 @@
 }
 
 - (void)commitAction:(id)sender{
+    //关闭键盘
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
     int ct=0;
@@ -1083,7 +1083,7 @@
         [request addPostValue:_infoBean.dowid forKey:@"dowid"];
         [request addPostValue:_infoBean.type forKey:@"type"];
         
-        __block ASIFormDataRequest *weakRequest = request;
+        __weak ASIFormDataRequest *weakRequest = request;
         [request setCompletionBlock:^{
             [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
             
@@ -1122,7 +1122,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     NSURL *url = [NSURL URLWithString:urlStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err=nil;
@@ -1341,7 +1341,7 @@
     NSArray *subImageArray = info[@"images"];
     NSArray *subImageFileId = info[@"files"];
 
-    __block AddFormDataBean *bean = info[@"bean"];
+    __weak AddFormDataBean *bean = info[@"bean"];
     
     
     if (bean.formfields.count >0) {

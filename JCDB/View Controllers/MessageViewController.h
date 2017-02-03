@@ -11,6 +11,7 @@
 @interface MessageViewController : HeadViewController
 
 
-
+@property(nonatomic,strong) NSString *listFlag;
+@property(nonatomic,strong) NSString *foundValue;
 
 @end

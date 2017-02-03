@@ -16,6 +16,7 @@
 #import "MyOperation.h"
 #import "KeyboardManager.h"
 
+#undef ShareAppDelegate
 #define ShareAppDelegate [UIApplication sharedApplication].delegate
 
 typedef void(^SuccessRefreshViewBlock)();
@@ -40,7 +41,6 @@ typedef void(^SuccessRefreshViewBlock)();
 @property (nonatomic ,strong) MyScrollView *scrollView;
 @property (nonatomic ,strong) UIView *iv_netstate;
 
-@property (nonatomic ,strong) UIView *falsePushView;//伪推送View
 @property (nonatomic ,strong) UILabel *falsePushLabel;
 
 

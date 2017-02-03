@@ -10,6 +10,7 @@
 #import "DXPopover.h"
 #import "SIAlertView.h"
 #import "Reachability.h"
+#import "AppDelegate.h"
 
 
 @interface LoginViewController (){
@@ -28,7 +29,7 @@
 
 - (BOOL)isExistenceNetwork
 {
-    _reachability = [Reachability reachabilityWithHostname:@"www.baidu.com"];  // 测试服务器状态
+    _reachability = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     
     BOOL isExistenceNetwork;
     switch([_reachability currentReachabilityStatus]) {
@@ -92,11 +93,12 @@
     [btn addTarget:self action:@selector(okActoin:) forControlEvents:UIControlEventTouchUpInside];
     [serverView addSubview:btn];
     
-    
     loginButton.backgroundColor = kALLBUTTON_COLOR;
     NSString *addressHttps = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
     if (!addressHttps) {
-        addressHttps=@"http://";
+        addressHttps=@"http://123.57.205.36:8080";
+        [[NSUserDefaults standardUserDefaults] setObject:addressHttps forKey:kAddressHttps];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     addrTextField.text = addressHttps;
     
@@ -136,7 +138,7 @@
     
     NSURL *url = [NSURL URLWithString:serviceStr];
    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         NSError *err=nil;
         NSData *responseData = [weakRequest responseData];
@@ -178,17 +180,19 @@
         return;
     }
     
-     NSString *serviceStr = [NSString stringWithFormat:@"%@/ext/LoginAction?action=mobileLogin&username=%@&password=%@&imei=0",self.serviceIPInfo,userTextField.text,passwordTextField.text];
+     NSString *urlStr = [NSString stringWithFormat:@"%@/ext/LoginAction?action=mobileLogin&username=%@&password=%@&imei=0",self.serviceIPInfo,userTextField.text,passwordTextField.text];
+//    登录，转义中文字符
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
-    NSURL *url = [NSURL URLWithString:serviceStr];
+    NSURL *url = [NSURL URLWithString:urlStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         NSError *err=nil;
         NSData *responseData = [weakRequest responseData];
-        __block NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
         
         if ([dic[@"success"] integerValue] == kSuccessCode){
             [self requestDeptInfo:dic];//请求第一级部门数据
@@ -202,7 +206,7 @@
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         [MBProgressHUD showError:@"请求失败" toView:self.view.window];
         
-        NSLog(@"weakRequest.error:%@",weakRequest.error);
+//        NSLog(@"weakRequest.error:%@",weakRequest.error);
         
     }];
     
@@ -216,7 +220,7 @@
     
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     __block NSDictionary *dataDic = info;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
@@ -246,10 +250,14 @@
 - (void)logining:(NSDictionary *)dic{
     
     NSDictionary *result = dic[@"result"];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *targetVC = [storyboard instantiateInitialViewController];
-    UIWindow *win = [[[UIApplication sharedApplication] delegate] window];
-    win.rootViewController = targetVC;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController *targetVC = [storyboard instantiateInitialViewController];
+//    UIWindow *win = [[[UIApplication sharedApplication] delegate] window];
+   
+//    win.rootViewController = targetVC;
+    
+    AppDelegate *app = [[UIApplication sharedApplication] delegate];
+    [app addTabBarController];
     
     BOOL REMBERFLAG = NO;
     BOOL isButtonOn = [remberMeSwitch isOn];

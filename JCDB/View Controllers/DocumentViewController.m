@@ -7,9 +7,9 @@
 //
 
 #import "DocumentViewController.h"
-#import "PullingRefreshTableView.h"
 //#import "EGORefreshTableHeaderView.h"
 #import "DocumentDetailViewController.h"
+#import "MJRefresh.h"
 
 
 @interface DocumentTableViewCell : UITableViewCell
@@ -35,14 +35,13 @@
 }
 @end;
 
+#define kDocumentFirstRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getDocument&pno=1&pageIndex=%@"
+#define kDocumentSecondRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getDocumentlist&pno=1&processid=%@&pageIndex=%@"
+#define kDocumentThirdRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getformdata&processid=%@&pageIndex=%@"
 
-#define kDocumentFirstRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getDocument&pno=1&pageIndex=1"
-#define kDocumentSecondRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getDocumentlist&pno=1&processid=%@&pageIndex=1"
-#define kDocumentThirdRequest @"%@/ext/com.cinsea.action.DocumentAction?action=getformdata&processid=%@&pageIndex=1"
-
-@interface DocumentViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>{
+@interface DocumentViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>{
     
-    PullingRefreshTableView *_tableView;
+    UITableView *_tableView;
     
     NSArray *listArray;//数据
     NSInteger pageNumber;
@@ -60,8 +59,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     listArray = [NSMutableArray array];
-    requestStr = [NSString stringWithFormat:kDocumentFirstRequest,self.serviceIPInfo];
     pageNumber = 1;
+    requestStr = [NSString stringWithFormat:kDocumentFirstRequest,self.serviceIPInfo,@(pageNumber)];
     flag = 1;
     [self initThisView];
 }
@@ -72,13 +71,45 @@
 }
 - (void)initThisView{
     
-    _tableView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0,0,self.viewWidth,self.viewHeight) pullingDelegate:self];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,self.viewWidth,self.viewHeight) ];
     _tableView.delegate = self;
     _tableView.dataSource = self;
 
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self reloadData];
     
+    __weak DocumentViewController *weakSelf = self;
+    __weak UITableView *tableView = _tableView;
+    
+    // 下拉刷新
+    tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            pageNumber ++;
+            [weakSelf requestData];
+            // 结束刷新
+            [tableView.mj_header endRefreshing];
+        });
+    }];
+    
+    // 设置自动切换透明度(在导航栏下面自动隐藏)
+    tableView.mj_header.automaticallyChangeAlpha = YES;
+    
+    // 上拉刷新
+    tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            pageNumber --;
+            if (pageNumber < 1) {
+                pageNumber = 1;
+            }
+            [weakSelf requestData];
+            // 结束刷新
+            [tableView.mj_footer endRefreshing];
+        });
+    }];
+
+
     [self.scrollView addSubview:_tableView];
 }
 
@@ -86,7 +117,12 @@
     [super viewWillAppear:animated];
     
     if (flag == 2) {
-        requestStr = [NSString stringWithFormat:kDocumentFirstRequest,self.serviceIPInfo];
+        flag --;
+        pageNumber = 1;
+        requestStr = [NSString stringWithFormat:kDocumentFirstRequest,self.serviceIPInfo,@(pageNumber)];
+    }
+    
+    if (flag == 3) {
         flag --;
         pageNumber = 1;
     }
@@ -95,7 +131,6 @@
 }
 
 - (void)requestData{
-    
 
 #if defined(DEBUG)||defined(_DEBUG)
    
@@ -107,7 +142,7 @@
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err = nil;
@@ -171,7 +206,6 @@
     
     NSDictionary *data = listArray[indexPath.row];
     
-//    [self roundImageView:cell.imageView withColor:nil];
     cell.imageView.image = [UIImage imageNamed:@"img_xiangmuguanli"];
     
     if (flag == 1) {
@@ -195,62 +229,24 @@
     }
     pageNumber = 1;
     
-    requestStr = [NSString stringWithFormat:kDocumentSecondRequest,self.serviceIPInfo,data[@"id"]];
+    requestStr = [NSString stringWithFormat:kDocumentSecondRequest,self.serviceIPInfo,data[@"id"],@(pageNumber)];
     [self requestData];
-    flag ++;
-}
-
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
-    pageNumber++;
-    [self reloadDataWithPageNumber:pageNumber];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate{
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *currentDateStr = [df stringFromDate:[NSDate date]];
-    NSDate *date = [df dateFromString:currentDateStr];
-    return date;
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
-    pageNumber++;
-    [self reloadDataWithPageNumber:pageNumber];
+    flag = flag + 1;
 }
 
 - (void)reloadData{
     
+    [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
-    [_tableView tableViewDidFinishedLoading];
-    _tableView.reachedTheEnd = NO;
-    
 }
 
 - (void)reloadDataWithPageNumber:(NSInteger)pageNum{
-    
     [self requestData];
-    
-}
-
-
-//拖拽后调用的方法
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    [_tableView tableViewDidEndDragging:scrollView];
-}
-
--(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
-    [self scrollViewDidEndDecelerating:scrollView];
-    
-}
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [_tableView tableViewDidScroll:scrollView];
 }
 
 - (void)backAction{
     if (flag == 2) {
-        [self viewWillAppear:NO];
+        [self viewWillAppear:YES];
         return;
     }
     
@@ -259,13 +255,15 @@
 
 - (void)thirdRequestData:(NSString *)processid{
     
-    NSString *urlStr = [NSString stringWithFormat:kDocumentThirdRequest,self.serviceIPInfo,processid];
+    flag = 3;
+    
+    NSString *urlStr = [NSString stringWithFormat:kDocumentThirdRequest,self.serviceIPInfo,processid,@(pageNumber)];
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlStr];
     [MBProgressHUD showHUDAddedTo:ShareAppDelegate.window animated:YES];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
+    __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:ShareAppDelegate.window animated:YES];
         NSError *err = nil;

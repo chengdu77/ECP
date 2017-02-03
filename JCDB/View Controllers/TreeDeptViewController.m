@@ -91,8 +91,8 @@
     
     NSURL *url = [NSURL URLWithString:serviceStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    __block ASIHTTPRequest *weakRequest = request;
-    __block Node *tempNode = node;
+    __weak ASIHTTPRequest *weakRequest = request;
+    __weak Node *tempNode = node;
     [request setCompletionBlock:^{
         [MBProgressHUD hideAllHUDsForView:self.view.window animated:YES];
         NSError *err=nil;
@@ -103,7 +103,7 @@
             NSInteger count = deptInfoArray.count;
             NSInteger index = [deptInfoArray indexOfObject:tempNode];
             NSArray *deptInfo = dic[@"result"];
-            for (int i = 0;i<deptInfo.count;i++) {
+            for (NSInteger i = 0;i<deptInfo.count;i++) {
                 NSDictionary *info = deptInfo[i];
                 NSString *name = info[@"text"];
                 NSString *Id = info[@"id"];
@@ -113,7 +113,7 @@
                     checked = !([self.defaultDepts indexOfObject:name] == NSNotFound);
                 }
                 
-                Node *node = [[Node alloc] initWithParentId:tempNode.nodeId nodeId:count+i name:name depth:tempNode.depth+1 expand:YES Id:Id leaf:leaf checked:checked];
+                Node *node = [[Node alloc] initWithParentId:tempNode.nodeId nodeId:count+i name:name depth:(tempNode.depth+1) expand:YES Id:Id leaf:leaf checked:checked];
                 [deptInfoArray insertObject:node atIndex:index+i+1];
             }
             tempNode.requested = YES;
