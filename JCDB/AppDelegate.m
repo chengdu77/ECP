@@ -63,6 +63,7 @@
     tabBarController.viewControllers = @[vc1,vc2,vc3,vc4];
     
     self.window.rootViewController = tabBarController;
+    
 }
 
 - (BOOL)tabBarController:(UITabBarController *)_tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -91,7 +92,7 @@
     
     [self.window makeKeyAndVisible];
     
-    [self startFalsePush];
+    [self registerUserNotification];
     
     return YES;
 }
@@ -118,7 +119,10 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *array = [defaults objectForKey:@"processid_FalsePushKey"];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:array.count];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -149,6 +153,24 @@
     });
 }
 
+- (void)registerUserNotification {
+    /*
+     注册通知(推送)
+     申请App需要接受来自服务商提供推送消息
+     */
+    // 判读系统版本是否是“iOS 8.0”以上
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 ||
+        [UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+        // 定义用户通知类型(Remote.远程 - Badge.标记 Alert.提示 Sound.声音)
+        UIUserNotificationType types = UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+        // 定义用户通知设置
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+        // 注册用户通知 - 根据用户通知设置
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+}
+
+
 // 设置本地通知
 - (void)registerLocalNotification:(NSInteger)alertTime alert:(NSString *)alertBody{
     
@@ -165,11 +187,18 @@
     // 时区
     notification.timeZone = [NSTimeZone defaultTimeZone];
     // 设置重复的间隔
-    notification.repeatInterval = kCFCalendarUnitSecond;
+    //notification.repeatInterval = kCFCalendarUnitSecond;
+    // 设置重复间隔（默认0，不重复推送）
+    notification.repeatInterval = 0;
+    // 推送声音（系统默认）
+    notification.soundName = UILocalNotificationDefaultSoundName;
     
     // 通知内容
     notification.alertBody = alertBody;
-    notification.applicationIconBadgeNumber += 1;
+    NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+    badge ++;
+    
+    notification.applicationIconBadgeNumber = badge;
     // 通知被触发时播放的声音
     notification.soundName = UILocalNotificationDefaultSoundName;
     // 通知参数
@@ -179,20 +208,7 @@
     // app名称
     NSString *app_Name = [infoDictionary objectForKey:@"CFBundleDisplayName"];
     notification.alertTitle = app_Name;
-   
-    // ios8后，需要添加这个注册，才能得到授权
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type
-                                                                                 categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        // 通知重复提示的单位，可以是天、周、月
-        notification.repeatInterval = NSCalendarUnitDay;
 
-    } else {
-        // 通知重复提示的单位，可以是天、周、月
-        notification.repeatInterval = NSCalendarUnitDay;
-    }
     // 执行通知注册
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
@@ -207,15 +223,42 @@
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     __weak ASIHTTPRequest *weakRequest = request;
     [request setCompletionBlock:^{
-        
         NSError *err=nil;
         NSData *responseData = [weakRequest responseData];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
-        if ([dic[@"flag"] integerValue] == kSuccessCode){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self registerLocalNotification:0.5 alert:dic[@"msg"]];
-            });
+        if (dic == nil){
+            return;
         }
+        if ([dic[@"flag"] integerValue] != kSuccessCode){
+            return;
+        }
+        NSArray *result = dic[@"result"];
+        if (result == nil){
+            return;
+        }
+        NSString *processid = result[0][@"processid"];
+        if (processid.length >0) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSArray *array = [defaults objectForKey:@"processid_FalsePushKey"];
+            if (!([array indexOfObject:processid] == NSNotFound) && array !=nil){
+                return;
+            }
+            NSMutableArray *mArray = [array mutableCopy];
+            if (mArray ==nil){
+                mArray = [NSMutableArray array];
+            }
+            [mArray addObject:processid];
+            [defaults setObject:mArray forKey:@"processid_FalsePushKey"];
+            [defaults synchronize];
+        }else{
+            return;
+        }
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self registerLocalNotification:.5 alert:dic[@"msg"]];
+        });
+        
     }];
     [request startAsynchronous];
 }

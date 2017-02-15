@@ -435,6 +435,7 @@
 		3F8455421D9CF21C00B79C03 /* WorkOrderPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderPageViewController.m; path = "View Controllers/WorkOrderPageViewController.m"; sourceTree = "<group>"; };
 		3F8455441D9CF35500B79C03 /* WorkOrderNewListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorkOrderNewListViewController.h; path = "View Controllers/WorkOrderNewListViewController.h"; sourceTree = "<group>"; };
 		3F8455451D9CF35500B79C03 /* WorkOrderNewListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WorkOrderNewListViewController.m; path = "View Controllers/WorkOrderNewListViewController.m"; sourceTree = "<group>"; };
+		3FCF74351E53374A000847F6 /* JCDB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JCDB.entitlements; sourceTree = "<group>"; };
 		3FFFE7441E0B7907006D8450 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9621CA901C5C9A400004BD4B /* JCDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JCDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9621CA941C5C9A400004BD4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -880,6 +881,7 @@
 		9621CA921C5C9A400004BD4B /* JCDB */ = {
 			isa = PBXGroup;
 			children = (
+				3FCF74351E53374A000847F6 /* JCDB.entitlements */,
 				183B1DEC1D615F0F0060D637 /* NavigationController */,
 				187868D31CABCE26003E6EBC /* TOWebViewController */,
 				9621CC191C5C9FEC0004BD4B /* View Controllers */,
@@ -1538,6 +1540,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 0;
+							};
 						};
 					};
 					9621CAA81C5C9A400004BD4B = {
@@ -2010,7 +2015,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = JCDB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.ecp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2034,7 +2039,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = JCDB/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.test.ecp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

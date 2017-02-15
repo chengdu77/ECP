@@ -307,6 +307,7 @@ YALContextMenuTableViewDelegate
     
     frame.size.height = isOk?kTextFieldHeight:kEditTextFieldHeight;
     view.frame = frame;
+    CGRect vFrame=frame;
     frame=CGRectMake(8,10,82,40);
     
     UILabel *aLabel = [[UILabel alloc] init];
@@ -330,7 +331,10 @@ YALContextMenuTableViewDelegate
     if ([fieldType isEqualToString:kEditTextField] ||[fieldType isEqualToString:kTextField] ||[fieldType isEqualToString:kSingleListField] || [fieldType isEqualToString:kMoreListField] ||[fieldType isEqualToString:kDateField]  ||[fieldType isEqualToString:kTimeField] || [fieldType isEqualToString:kSelectListField]) {
         
         frame = CGRectMake(87,10,self.viewWidth -100,isOk?kTextFieldHeight:kEditTextFieldHeight);
-       
+        if (labelsize.height > frame.size.height) {
+            frame.size.height = labelsize.height;
+        }
+        
         if ([fieldType isEqualToString:kEditTextField] ||[fieldType isEqualToString:kTextField]) {
             
             if (!([bean.fieldname isEqualToString:@"content"] || [bean.fieldname isEqualToString:@"subject"])){
@@ -613,6 +617,10 @@ YALContextMenuTableViewDelegate
         //        #define kUploadFileField @"uploadFileField" //可选上传附件
     }
     
+    if (labelsize.height > vFrame.size.height) {
+        vFrame.size.height = labelsize.height;
+        view.frame = vFrame;
+    }
     return view;
 }
 
@@ -1129,7 +1137,7 @@ YALContextMenuTableViewDelegate
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
-                                  cancelButtonTitle:nil
+                                  cancelButtonTitle:@"取消"
                                   destructiveButtonTitle:buttonTitle
                                   otherButtonTitles:rejectbutton,nil];
     actionSheet.tag = index;
@@ -1138,6 +1146,11 @@ YALContextMenuTableViewDelegate
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    //判断点击了取消按钮？add by wjc 2017-2-5
+    if (buttonIndex == actionSheet.cancelButtonIndex){
+        return;
+    }
     
     NSString *title;
     NSString *action;
