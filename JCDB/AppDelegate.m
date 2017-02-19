@@ -20,6 +20,9 @@
 @interface AppDelegate ()<UITabBarControllerDelegate>{
     NSTimer *timer;
     KSJXTabBarController *tabBarController;
+    
+    BOOL isLoaded;
+
 }
 
 @property (strong, nonatomic) NSString *alertBody;
@@ -27,6 +30,14 @@
 @end
 
 @implementation AppDelegate
+
+
++ (void)initialize{
+    [super initialize];
+    
+    NSDictionary *defaultValues = [NSDictionary dictionaryWithObjectsAndKeys: @(NO), @"isLogined",nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
+}
 
 
 - (void)addTabBarController{
@@ -64,6 +75,9 @@
     
     self.window.rootViewController = tabBarController;
     
+    [self startFalsePush];
+    
+    isLoaded = YES;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)_tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -88,6 +102,8 @@
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:kFontName size:20],NSFontAttributeName,@0.0,NSBaselineOffsetAttributeName, nil]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
+//    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    
     [self loginView];
     
     [self.window makeKeyAndVisible];
@@ -106,11 +122,40 @@
     
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    [self startFalsePush];
-}
+//- (void)applicationWillResignActive:(UIApplication *)application {
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    BOOL isLogined = [defaults boolForKey:@"isLogined"];
+//    if (!isLogined) {
+//        return;
+//    }
+//    
+//    [self startFalsePush];
+//}
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isLogined = [defaults boolForKey:@"isLogined"];
+    if (!isLogined) {
+        return;
+    }
+    
+    UIApplication *app = [UIApplication sharedApplication];
+    __block    UIBackgroundTaskIdentifier bgTask;
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid){
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid){
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    });
+    
     [self startFalsePush];
 }
 
@@ -120,9 +165,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSArray *array = [defaults objectForKey:@"processid_FalsePushKey"];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:array.count];
+    if (!isLoaded) {
+        return;
+    }
+    
+    [self startFalsePush];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -144,6 +191,7 @@
     }
     timer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     [timer fire];
+    
 }
 
 - (void)timerFired:(id)sender{
@@ -170,7 +218,6 @@
     }
 }
 
-
 // 设置本地通知
 - (void)registerLocalNotification:(NSInteger)alertTime alert:(NSString *)alertBody{
     
@@ -187,9 +234,9 @@
     // 时区
     notification.timeZone = [NSTimeZone defaultTimeZone];
     // 设置重复的间隔
-    //notification.repeatInterval = kCFCalendarUnitSecond;
+//    notification.repeatInterval = kCFCalendarUnitSecond;
     // 设置重复间隔（默认0，不重复推送）
-    notification.repeatInterval = 0;
+//    notification.repeatInterval = 0;
     // 推送声音（系统默认）
     notification.soundName = UILocalNotificationDefaultSoundName;
     
@@ -213,9 +260,14 @@
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
-
 - (void)requestfalsePush{
-  
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self registerLocalNotification:.5 alert:@"test"];
+//    });
+//    
+//    return;
+    
     NSString *serviceIPInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
     NSString *serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.NotifyAction?action=getIsNotify",serviceIPInfo];
     NSURL *url = [NSURL URLWithString:serviceStr];
@@ -254,13 +306,13 @@
             return;
         }
         
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self registerLocalNotification:.5 alert:dic[@"msg"]];
         });
         
     }];
     [request startAsynchronous];
+    
 }
 
 

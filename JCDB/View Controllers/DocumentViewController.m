@@ -45,6 +45,7 @@
     
     NSArray *listArray;//数据
     NSInteger pageNumber;
+    NSInteger totalPageCount;
     
     NSString *requestStr;
     NSInteger flag;
@@ -86,6 +87,9 @@
         // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             pageNumber ++;
+            if (pageNumber > totalPageCount) {
+                pageNumber = totalPageCount;
+            }
             [weakSelf requestData];
             // 结束刷新
             [tableView.mj_header endRefreshing];

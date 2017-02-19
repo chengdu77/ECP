@@ -303,7 +303,10 @@ YALContextMenuTableViewDelegate
     NSString *value = mainformDictionary[bean.Id];
     UIView *view = [UIView new];
 
-    BOOL isOk  = ([fieldType isEqualToString:kEditTextField] &&([bean.fieldname isEqualToString:@"content"] || [bean.fieldname isEqualToString:@"subject"]));
+//    BOOL isOk  = ([fieldType isEqualToString:kEditTextField] &&([bean.fieldname isEqualToString:@"content"] || [bean.fieldname isEqualToString:@"subject"]));
+    
+    BOOL isOk  = ([fieldType isEqualToString:kEditTextField] &&[bean.displaytype isEqualToString:@"2"]);
+
     
     frame.size.height = isOk?kTextFieldHeight:kEditTextFieldHeight;
     view.frame = frame;
@@ -337,7 +340,7 @@ YALContextMenuTableViewDelegate
         
         if ([fieldType isEqualToString:kEditTextField] ||[fieldType isEqualToString:kTextField]) {
             
-            if (!([bean.fieldname isEqualToString:@"content"] || [bean.fieldname isEqualToString:@"subject"])){
+            if (!([bean.displaytype isEqualToString:@"2"])){
                 UITextField *textField = [[UITextField alloc] init];
                 
                 textField.font = [UIFont fontWithName:kFontName size:14];
@@ -391,8 +394,6 @@ YALContextMenuTableViewDelegate
                 textView.fieldType = fieldType;
                 textView.Id = bean.Id;
                 textView.fieldname = bean.fieldname;
-                
-                textView.keyboardType = UIKeyboardTypeDecimalPad;
                 
                 if ([bean.displaymode isEqualToString:@"3"]) {
                     textView.must = @"1";

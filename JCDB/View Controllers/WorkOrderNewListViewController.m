@@ -25,6 +25,7 @@
     BOOL businessFlag;
     
     NSInteger pageIndex;
+    NSInteger totalPageCount;
 }
 
 @end
@@ -70,6 +71,9 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             businessFlag = NO;
             pageIndex ++;
+            if (pageIndex > totalPageCount) {
+                pageIndex = totalPageCount;
+            }
             [weakSelf reloadDataWithTag:self.index flag:YES];
             // 结束刷新
             [tableView.mj_header endRefreshing];
@@ -182,7 +186,7 @@
         }
         if ([dic[@"success"] integerValue] == kSuccessCode){
             NSDictionary *result = dic[@"result"];
-            
+            totalPageCount = [result[@"totalPageCount"] integerValue];
             NSArray *wflist = result[@"wflist"];
             for (NSDictionary *info in wflist) {
                 

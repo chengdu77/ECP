@@ -250,26 +250,24 @@
 - (void)logining:(NSDictionary *)dic{
     
     NSDictionary *result = dic[@"result"];
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    UIViewController *targetVC = [storyboard instantiateInitialViewController];
-//    UIWindow *win = [[[UIApplication sharedApplication] delegate] window];
-   
-//    win.rootViewController = targetVC;
     
-    AppDelegate *app = [[UIApplication sharedApplication] delegate];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app addTabBarController];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL REMBERFLAG = NO;
     BOOL isButtonOn = [remberMeSwitch isOn];
     if (isButtonOn) {
-        [[NSUserDefaults standardUserDefaults] setObject:userTextField.text forKey:kUSERNAME];
-        [[NSUserDefaults standardUserDefaults] setObject:passwordTextField.text forKey:kPASSWORD];
+        [defaults setObject:userTextField.text forKey:kUSERNAME];
+        [defaults setObject:passwordTextField.text forKey:kPASSWORD];
         REMBERFLAG = YES;
     }
     
-    [[NSUserDefaults standardUserDefaults] setBool:REMBERFLAG forKey:kREMBERFLAG];
-    [[NSUserDefaults standardUserDefaults] setObject:result forKey:kOneselfInfo];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+   
+    [defaults setBool:YES forKey:@"isLogined"];
+    [defaults setBool:REMBERFLAG forKey:kREMBERFLAG];
+    [defaults setObject:result forKey:kOneselfInfo];
+    [defaults synchronize];
     
 }
 

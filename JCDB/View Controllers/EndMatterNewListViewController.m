@@ -19,6 +19,7 @@
     UIImage *image;
     
     NSInteger pageIndex;
+    NSInteger totalPageCount;
 }
 
 
@@ -53,6 +54,9 @@
         // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             pageIndex ++;
+            if (pageIndex > totalPageCount) {
+                pageIndex = totalPageCount;
+            }
             [weakSelf reloadDataWithTag:self.index flag:YES];
             // 结束刷新
             [tableView.mj_header endRefreshing];
@@ -207,6 +211,7 @@
         
         if ([dic[@"success"] integerValue] ==1){
             NSDictionary *result = dic[@"result"];
+            totalPageCount = [result[@"totalPageCount"] integerValue];
             NSArray *wflist = result[@"wflist"];
             for (NSDictionary *info in wflist) {
                 
