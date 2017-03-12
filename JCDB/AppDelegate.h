@@ -15,5 +15,7 @@
 - (void)addTabBarController;
 - (void)loginView;
 
+- (void)cancelLocalNotification;
+
 @end
 

@@ -307,7 +307,6 @@ YALContextMenuTableViewDelegate
     
     BOOL isOk  = ([fieldType isEqualToString:kEditTextField] &&[bean.displaytype isEqualToString:@"2"]);
 
-    
     frame.size.height = isOk?kTextFieldHeight:kEditTextFieldHeight;
     view.frame = frame;
     CGRect vFrame=frame;

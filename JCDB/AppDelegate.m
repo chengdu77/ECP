@@ -22,6 +22,8 @@
     KSJXTabBarController *tabBarController;
     
     BOOL isLoaded;
+    
+    UILocalNotification *notification;
 
 }
 
@@ -74,8 +76,11 @@
     tabBarController.viewControllers = @[vc1,vc2,vc3,vc4];
     
     self.window.rootViewController = tabBarController;
-    
-    [self startFalsePush];
+//屏蔽伪推送2017-03-01
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    [defaults setBool:NO forKey:@"cannel_FalsePushKey"];
+//    [defaults synchronize];
+//    [self startFalsePush];
     
     isLoaded = YES;
 }
@@ -107,8 +112,8 @@
     [self loginView];
     
     [self.window makeKeyAndVisible];
-    
-    [self registerUserNotification];
+    //屏蔽伪推送2017-03-01
+//    [self registerUserNotification];
     
     return YES;
 }
@@ -119,7 +124,7 @@
     LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
     UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
     self.window.rootViewController = navController;
-    
+
 }
 
 //- (void)applicationWillResignActive:(UIApplication *)application {
@@ -133,30 +138,31 @@
 //}
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL isLogined = [defaults boolForKey:@"isLogined"];
-    if (!isLogined) {
-        return;
-    }
-    
-    UIApplication *app = [UIApplication sharedApplication];
-    __block    UIBackgroundTaskIdentifier bgTask;
-    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (bgTask != UIBackgroundTaskInvalid){
-                bgTask = UIBackgroundTaskInvalid;
-            }
-        });
-    }];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (bgTask != UIBackgroundTaskInvalid){
-                bgTask = UIBackgroundTaskInvalid;
-            }
-        });
-    });
-    
-    [self startFalsePush];
+//屏蔽伪推送2017-03-01
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    BOOL isLogined = [defaults boolForKey:@"isLogined"];
+//    if (!isLogined) {
+//        return;
+//    }
+//    
+//    UIApplication *app = [UIApplication sharedApplication];
+//    __block    UIBackgroundTaskIdentifier bgTask;
+//    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (bgTask != UIBackgroundTaskInvalid){
+//                bgTask = UIBackgroundTaskInvalid;
+//            }
+//        });
+//    }];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (bgTask != UIBackgroundTaskInvalid){
+//                bgTask = UIBackgroundTaskInvalid;
+//            }
+//        });
+//    });
+//    
+//    [self startFalsePush];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -164,41 +170,44 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
-    if (!isLoaded) {
-        return;
-    }
-    
-    [self startFalsePush];
+    //屏蔽伪推送2017-03-01
+//    if (!isLoaded) {
+//        return;
+//    }
+//    
+//    [self startFalsePush];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    [self logoutAction];
+//屏蔽伪推送2017-03-01
+//    [self cancelLocalNotification];
 }
 
 // 本地通知回调函数，当应用程序在前台时调用
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)_notification {
 //    NSLog(@"noti:%@",notification.userInfo[@"FalsePushKey"]);
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"FalsePushNotification" object:notification.userInfo[@"FalsePushKey"]];
+//屏蔽伪推送2017-03-01
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"FalsePushNotification" object:_notification.userInfo[@"FalsePushKey"]];
 }
 
 - (void)startFalsePush{
-    
-    if (timer) {
-        [timer invalidate];
-        timer = nil;
-    }
-    timer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [timer fire];
+//屏蔽伪推送2017-03-01
+//    if (timer) {
+//        [timer invalidate];
+//        timer = nil;
+//    }
+//    timer = [NSTimer scheduledTimerWithTimeInterval:180 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+//    [timer fire];
     
 }
 
 - (void)timerFired:(id)sender{
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self requestfalsePush];
-    });
+ //屏蔽伪推送2017-03-01
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [self requestfalsePush];
+//    });
 }
 
 - (void)registerUserNotification {
@@ -221,12 +230,13 @@
 // 设置本地通知
 - (void)registerLocalNotification:(NSInteger)alertTime alert:(NSString *)alertBody{
     
-    
     if (!alertBody ||alertBody.length == 0) {
         return;
     }
     
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    if (notification == nil){
+        notification = [[UILocalNotification alloc] init];
+    }
     // 设置触发通知的时间
     NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:alertTime];
     
@@ -265,8 +275,13 @@
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        [self registerLocalNotification:.5 alert:@"test"];
 //    });
-//    
 //    return;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isCannel = [defaults boolForKey:@"cannel_FalsePushKey"];
+    if (isCannel){
+        return;
+    }
     
     NSString *serviceIPInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
     NSString *serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.NotifyAction?action=getIsNotify",serviceIPInfo];
@@ -314,6 +329,36 @@
     [request startAsynchronous];
     
 }
+
+- (void)logoutAction{
+    NSString *serviceIPInfo = [[NSUserDefaults standardUserDefaults] objectForKey:kAddressHttps];
+    NSString *serviceStr = [NSString stringWithFormat:@"%@/ext/com.cinsea.action.LogoutAction",serviceIPInfo];
+    
+    NSURL *url = [NSURL URLWithString:serviceStr];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    
+    [request startAsynchronous];
+}
+
+- (void)cancelLocalNotification{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:@"cannel_FalsePushKey"];
+    [defaults synchronize];
+    
+    if (notification){
+        [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        notification = nil;
+    }
+    
+    if (timer) {
+        [timer invalidate];
+        timer = nil;
+    }
+    
+    isLoaded = NO;
+}
+
 
 
 @end

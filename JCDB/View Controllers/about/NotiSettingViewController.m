@@ -14,6 +14,7 @@
 #import "WorkOrderBean.h"
 #import "SettingNewAddViewController.h"
 #import "AttendanceHistoryViewController.h"
+#import "AppDelegate.h"
 
 @interface NotiSettingViewController ()<UIAlertViewDelegate>
 {
@@ -110,7 +111,10 @@ static NotiSettingViewController* _nsvc;
         NSData *responseData = [weakRequest responseData];
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
         
-        if ([dic[@"success"] integerValue] ==1){
+        if ([dic[@"success"] integerValue] == kSuccessCode){
+            
+//            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            [app cancelLocalNotification];
             
             [self showLoginView];
             

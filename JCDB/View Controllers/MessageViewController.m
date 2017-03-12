@@ -162,15 +162,22 @@
     [self.navigationController pushViewController:details animated:YES];
     
     if (self.listFlag.length == 0){
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSArray *array = [defaults objectForKey:@"processid_FalsePushKey"];
-        if (array.count >0) {
-            NSMutableArray *mArray = [array mutableCopy];
-            [mArray removeObject:bean.processid];
-            [defaults setObject:mArray forKey:@"processid_FalsePushKey"];
-            [defaults synchronize];
-            
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:mArray.count];
+//屏蔽伪推送2017-03-01
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//        NSArray *array = [defaults objectForKey:@"processid_FalsePushKey"];
+//        if (array.count >0) {
+//            NSMutableArray *mArray = [array mutableCopy];
+//            [mArray removeObject:bean.processid];
+//            [defaults setObject:mArray forKey:@"processid_FalsePushKey"];
+//            [defaults synchronize];
+//            
+//            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:mArray.count];
+//        }
+        
+        NSInteger badge = [UIApplication sharedApplication].applicationIconBadgeNumber;
+        if (badge >1){
+            badge --;
+            [UIApplication sharedApplication].applicationIconBadgeNumber = badge;
         }
     }
 }

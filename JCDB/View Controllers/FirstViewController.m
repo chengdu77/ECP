@@ -104,7 +104,7 @@
     
     MessageViewController *messageViewController = MessageViewController.new;
     messageViewController.listFlag=@"1";
-    messageViewController.foundValue=@"测试";
+    messageViewController.foundValue=found;
     [self.navigationController pushViewController:messageViewController animated:YES];
     
     foundTextField.text = @"";
@@ -261,8 +261,8 @@
     [self initPopFoundView];
     
     [self initJGGMenuView];
-    
-    [self initFalsePushView];
+//屏蔽伪推送2017-03-01
+//    [self initFalsePushView];
     
     [self redPoint];
     
@@ -506,6 +506,8 @@
     }else{
         [notifyLabel clearBadge];
     }
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = notify;
 }
 
 - (void)dealloc {
