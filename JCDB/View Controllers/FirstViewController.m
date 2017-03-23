@@ -34,7 +34,7 @@
 #define kQqwwcRedPointViewTag 101
 #define kYibanRedPointViewTag 102
 
-@interface FirstViewController (){
+@interface FirstViewController ()<CLLocationManagerDelegate>{
   
     NSMutableArray *redViewArrays;
     NSArray *wfprocessValues;
@@ -55,6 +55,8 @@
 @property (nonatomic ,strong) UIView *falsePushView;//伪推送View
 
 @property (nonatomic, strong) DXPopover *popover;
+
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -293,14 +295,18 @@
     NSArray *buttonArray = [[NSArray alloc]initWithObjects:refreshButton,findButton,nil];
     self.navigationItem.rightBarButtonItems = buttonArray;
     
-    __weak FirstViewController *wself = self;
-    [[CCLocationManager shareLocation] getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
-        wself.jingweidu = [NSString stringWithFormat:@"%f,%f",locationCorrrdinate.longitude,locationCorrrdinate.latitude];
-    } withAddress:^(NSString *addressString) {
-        
-        wself.didian = addressString;
-
-    }];
+//    __weak FirstViewController *wself = self;
+//    [[CCLocationManager shareLocation] getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
+//        wself.jingweidu = [NSString stringWithFormat:@"%f,%f",locationCorrrdinate.longitude,locationCorrrdinate.latitude];
+//    } withAddress:^(NSString *addressString) {
+//        
+//        wself.didian = addressString;
+//
+//    }];
+//
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(falsePushAction:) name: @"FalsePushNotification" object:nil];
     
@@ -573,21 +579,58 @@
 }
 
 - (void)signActoin:(UIButton *)sender{
-    if (self.didian.length == 0 || self.jingweidu.length == 0){
-        [MBProgressHUD showError:@"没有取到签到定位信息" toView:ShareAppDelegate.window];
-        return;
+    
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]){
+        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager startUpdatingLocation];
+        
+        __weak FirstViewController *wself = self;
+        [[CCLocationManager shareLocation] getLocationCoordinate:^(CLLocationCoordinate2D locationCorrrdinate) {
+            wself.jingweidu = [NSString stringWithFormat:@"%f,%f",locationCorrrdinate.longitude,locationCorrrdinate.latitude];
+        } withAddress:^(NSString *addressString) {
+            
+            wself.didian = addressString;
+            
+            if (wself.didian.length == 0 || wself.jingweidu.length == 0){
+                [MBProgressHUD showError:@"没有取到签到定位信息" toView:ShareAppDelegate.window];
+                [wself.locationManager stopUpdatingLocation];
+                return;
+            }
+            
+            //初始化提示框；
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"当前位置" message:wself.didian preferredStyle:  UIAlertControllerStyleAlert];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:@"签到" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [wself signButtonAction:nil];
+                [wself.locationManager stopUpdatingLocation];
+            }]];
+            
+            //弹出提示框；
+            [wself presentViewController:alert animated:YES completion:nil];
+           
+        }];
+        
     }
-    
-    //初始化提示框；
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"当前位置" message:self.didian preferredStyle:  UIAlertControllerStyleAlert];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:@"签到" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self signButtonAction:nil];
-    }]];
-    
-    //弹出提示框；
-    [self presentViewController:alert animated:YES completion:nil];
-    
+}
+
+//- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+//    // 1.获取用户位置的对象
+//    CLLocation *location = [locations lastObject];
+//    CLLocationCoordinate2D coordinate = location.coordinate;
+//    NSLog(@"纬度:%f 经度:%f", coordinate.latitude, coordinate.longitude);
+//    
+//  
+//
+//    
+//    // 2.停止定位
+//    [manager stopUpdatingLocation];
+//}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    if (error.code == kCLErrorDenied) {
+        // 提示用户出错原因，可按住Option键点击 KCLErrorDenied的查看更多出错信息，可打印error.code值查找原因所在
+        [MBProgressHUD showError:@"没有取到签到定位信息" toView:ShareAppDelegate.window];
+    }
 }
 
 
